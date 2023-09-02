@@ -3,10 +3,15 @@ import mainLogo from "../../../asset/images/mainlogo.png";
 import Input from "../../atoms/Input";
 import Button from "../../atoms/Button";
 import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 const Login = () => {
   const nav = useNavigate();
 
+  // 페이지가 처음 로드될 때 스크롤을 가장 위로 이동
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const signUpMethods = () => {
     nav('signUp');
   }

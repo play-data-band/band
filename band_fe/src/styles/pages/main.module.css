@@ -104,3 +104,22 @@
 }
 
 
+.inputArea input[type="file"] {
+    background-color: #fff;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    padding: 10px;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.inputArea input[type="file"]::-webkit-file-upload-button {
+    background-color: rgb(110, 80, 255);
+    color: #fff;
+    border-radius: 5px;
+    padding: 7px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: none;
+}

@@ -15,6 +15,16 @@ const Signup = () => {
     nav('/category');
   }
 
+  const loginHandler = () => {
+    nav('/');
+  }
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0]; // 선택한 파일
+    // 여기에서 파일 업로드 로직을 구현하거나, 서버로 파일을 전송하는 등의 처리를 수행할 수 있습니다.
+    console.log("업로드된 파일:", file);
+  };
+
   return (
     <div>
       <PC>
@@ -29,15 +39,22 @@ const Signup = () => {
         <div className={classes.inputArea}>
           <Input placeholder="example@email.com" value="아이디(이메일)" type="text" />
           <Input placeholder="********" value="비밀번호" type="password" />
-          <Input placeholder="" value="성함" type="text" />
-          <Input placeholder="" value="Mbti" type="text" />
-          <Input placeholder="" value="프로필 이미지" type="text" />
+          <Input placeholder="홍길동" value="성함" type="text" />
+          <Input placeholder="ENFJ" value="Mbti" type="text" />
+          {/*<Input placeholder="" value="프로필 이미지" type="text" />*/}
+          <Input
+            placeholder="프로필 이미지"
+            value="프로필 이미지"
+            type="file"
+            accept="image/*" // 이미지 파일만 허용
+            onChange={(e) => handleImageUpload(e)}
+          />
           <div className={classes.findArea}></div>
           <Button onClick={signupHandler} value="회원가입" />
         </div>
         <div className={classes.signupArea}>
           <div className={classes.signupAreaInner}>
-            <span>이미 회원이신가요 ?</span>
+            <span onClick={loginHandler}>이미 회원이신가요 ?</span>
           </div>
         </div>
       </Mobile>
