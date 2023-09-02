@@ -6,7 +6,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/play-data-band/band_config_server.git
+          uri: https://github.com/play-data-band/band_config_source.git
 
 encrypt:
   key: bandSecret
