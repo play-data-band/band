@@ -66,3 +66,41 @@
     text-decoration: underline;
     cursor: pointer;
 }
+
+.categorySelect {
+    text-align: center;
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 10vw;
+}
+
+.categoryWrap {
+    width: 100%;
+}
+
+.categoryWrapInnerWrap {
+    width: 85%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9vw 11vw;
+    margin-bottom: 10vw;
+}
+
+.itemWrap {
+    width: calc(100% / 4 - 9vw);
+    position: relative;
+}
+
+.cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 16vw;
+    height: 16vw;
+    border-radius: 50%;
+    background: rgba(246, 246, 246, 0.8);
+    cursor: pointer;
+}
+
+

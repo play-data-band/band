@@ -1,0 +1,33 @@
+.categoryWrap {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+
+
+.imgWrap {
+    width: 16vw;
+    height: 16vw;
+    background: #f0f1f1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2vw;
+}
+
+.textWrap {
+    width: 16vw;
+}
+
+.img {
+    height: 70%;
+    border-radius: 50%;
+}
+
+.itemParam {
+    text-align: center;
+    font-size: 3vw;
+    color: rgb(230, 225, 225);
+}
