@@ -1,0 +1,12 @@
+server:
+  port: 8888
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/play-data-band/band_config_server.git
+
+encrypt:
+  key: bandSecret
