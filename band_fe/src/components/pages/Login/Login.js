@@ -1,23 +1,36 @@
-import classes from "../../../styles/pages/main.module.css";
+import classes from "../../../styles/pages/Main.module.css";
 import mainLogo from "../../../asset/images/mainlogo.png";
 import Input from "../../atoms/Input";
 import Button from "../../atoms/Button";
 import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import Loading from "../../atoms/Loading";
 
 const Login = () => {
   const nav = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   // 페이지가 처음 로드될 때 스크롤을 가장 위로 이동
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   const signUpMethods = () => {
-    nav('signUp');
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      nav('signUp');
+    }, 700);
+
   }
 
   const loginSubmitHandler = () => {
+    setLoading(true);
 
+    setTimeout(() => {
+      setLoading(false);
+      nav('main');
+    }, 700);
   }
 
   return (
@@ -36,6 +49,7 @@ const Login = () => {
           <span onClick={signUpMethods}>회원이 아니신가요 ?</span>
         </div>
       </div>
+      {loading && <Loading />}
     </div>
   );
 }

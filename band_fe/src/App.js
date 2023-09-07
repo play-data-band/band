@@ -1,6 +1,6 @@
-import './styles/common/reset.css'
+import './styles/common/Reset.css'
 import {Mobile, PC} from "./components/config/Responsive";
-import classes from "./styles/pages/main.module.css";
+import classes from "./styles/pages/Main.module.css";
 import Login from "./components/pages/Login/Login";
 
 

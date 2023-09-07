@@ -1,18 +1,27 @@
-import classes from "../../../styles/pages/main.module.css";
+import classes from "../../../styles/pages/Main.module.css";
 import mainLogo from "../../../asset/images/mainlogo2.png";
 import Input from "../../atoms/Input";
 import Button from "../../atoms/Button";
 import {useNavigate} from "react-router-dom";
 import {Mobile, PC} from "../../config/Responsive";
+import Loading from "../../atoms/Loading";
+import {useState} from "react";
 
 const Signup = () => {
+  const [loading, setLoading] = useState(false);
   const nav = useNavigate();
   const loginMethods = () => {
     nav('/');
   }
 
   const signupHandler = () => {
-    nav('/category');
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      nav('/category');
+    }, 700);
+
   }
 
   const loginHandler = () => {
@@ -57,6 +66,7 @@ const Signup = () => {
             <span onClick={loginHandler}>이미 회원이신가요 ?</span>
           </div>
         </div>
+        {loading && <Loading />}
       </Mobile>
     </div>
   );
