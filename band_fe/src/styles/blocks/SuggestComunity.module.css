@@ -1,3 +1,7 @@
+.space {
+    padding-bottom: 60px;
+}
+
 .suggestionArea {
     display: flex;
     align-items: center;
@@ -12,7 +16,6 @@
     width: 14vw;
     height: 14vw;
     border-radius: 20px;
-    background: #1877f2;
 }
 
 .suggestionLeftInner {
@@ -68,3 +71,21 @@
     padding: 1vw 2vw;
     color: #6e50ff;
 }
+
+.classRightInner {
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+}
+
+.classTitle {
+    font-weight: 600;
+    font-size: 4vw;
+}
+
+.schedule {
+    padding: 0 3vw;
+    color: #8d8d8d;
+    font-size: 3vw;
+}
+

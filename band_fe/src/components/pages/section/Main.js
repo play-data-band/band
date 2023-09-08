@@ -17,6 +17,7 @@ const Main = () => {
   const [showFixedMenuBar, setShowFixedMenuBar] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const handleScroll = () => {
       // 여기에 스크롤 이벤트 핸들링 로직을 추가
       if (window.scrollY > 0) {
@@ -99,7 +100,8 @@ const Main = () => {
             <SuggestComunity />
           </div>
 
-          <FixedMenuBar bottom={showFixedMenuBar ? '0' : '-20vw'} />
+          {/* bottom={showFixedMenuBar ? '0' : '-20vw'} */}
+          <FixedMenuBar />
         </div>
       </Mobile>
     </>
