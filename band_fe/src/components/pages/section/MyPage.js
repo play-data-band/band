@@ -68,7 +68,7 @@ const MyPage = () => {
   ]);
 
   return (
-    <div>
+    <div className={classes.fixedSpace}>
       <PC>
         <div className={classes.pcWrap} >
           <p className={classes.pcWrapInner}>화면을 550px 이하로 줄여 주세요.</p>
@@ -96,9 +96,6 @@ const MyPage = () => {
 
         <div className={myClasses.mySubj}>
           <div className={myClasses.mySubjWrap}>
-            <span className={myClasses.mySubjWrapItem}>헬스/크로스핏</span>
-            <span className={myClasses.mySubjWrapItem}>헬스/크로스핏</span>
-            <span className={myClasses.mySubjWrapItem}>헬스/크로스핏</span>
             <span className={myClasses.mySubjWrapItem}>헬스/크로스핏</span>
             <span className={myClasses.mySubjWrapItem}>헬스/크로스핏</span>
             <span className={myClasses.mySubjWrapItem}>헬스/크로스핏</span>

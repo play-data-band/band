@@ -17,7 +17,7 @@ export default function Carousel2(props) {
     <>
       <Swiper
         slidesPerView={4}
-        spaceBetween={-20}
+        spaceBetween={-30}
         freeMode={true}
         pagination={{
           clickable: true,
