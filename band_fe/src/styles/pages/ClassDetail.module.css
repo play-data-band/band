@@ -1,0 +1,72 @@
+.classDetailWrap {
+    padding: 0 5vw;
+}
+
+.detailHeader {
+
+}
+
+.detailHeaderWrap {
+
+}
+
+.back {
+
+}
+
+.iconWrap {
+
+}
+
+.heart {
+
+}
+
+.share {
+
+}
+
+.more {
+
+}
+
+.selectArea {
+    width: 100%;
+    height: 8vw;
+    margin-bottom: 3px;
+}
+
+.selectAreaInner {
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.selectItem {
+    width: 33.3%;
+    height: 100%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.selectItem p {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.border {
+    width: 90%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.borderInner {
+    position: absolute;
+    left: 0;
+    width: 25%;
+    height: 3px;
+    background: #333;
+    transition: 0.3s ease;
+}

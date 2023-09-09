@@ -5,6 +5,7 @@ import UserCategoryType from "./components/pages/Login/UserCategoryType";
 import Main from "./components/pages/section/Main";
 import MyClass from "./components/pages/section/MyClass";
 import MyPage from "./components/pages/section/MyPage";
+import ClassDetail from "./components/pages/section/ClassDetail";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
   {
     path : '/myPage',
     element : <MyPage />,
+  },
+  {
+    path : '/classDetail',
+    element : <ClassDetail />,
   },
 ]);
 

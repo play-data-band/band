@@ -2,7 +2,7 @@ import React, {useRef} from 'react';
 import classes from "../../styles/blocks/SuggestComunity.module.css";
 import piano from "../../asset/images/piano.jpeg";
 
-const SuggestComunity = () => {
+const SuggestComunity = (props) => {
 
   const backgroundRef = useRef();
 
@@ -11,6 +11,7 @@ const SuggestComunity = () => {
 
     setTimeout(() => {
       backgroundRef.current.style.background = '#fff';
+      props.onClick();
     }, 100);
   }
 

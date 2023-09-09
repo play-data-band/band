@@ -7,6 +7,7 @@ import Category from "../../blocks/Category";
 import {categoryMenu} from "../../../common/Menus";
 import SuggestComunity from "../../blocks/SuggestComunity";
 import FixedMenuBar from "../Layout/FixedMenuBar";
+import {useNavigate} from "react-router-dom";
 
 const Main = () => {
   const border = useRef();
@@ -15,6 +16,7 @@ const Main = () => {
   const [categoryMenuLength, setCategoryMenuLength] = useState(categoryMenu.length);
   const [categoryCount, setCategoryCount] = useState(10);
   const [showFixedMenuBar, setShowFixedMenuBar] = useState(false);
+  const nav = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -51,6 +53,10 @@ const Main = () => {
   const categoryMoreShow = () => {
     setIsCategoryMore(!isCategoryMore);
     setCategoryMoreText(false);
+  }
+
+  const goToDetail = () => {
+    nav('/classDetail')
   }
 
   return (
@@ -91,13 +97,13 @@ const Main = () => {
           </div>
 
             <div className={classes.suggestionWrap}>
-            <SuggestComunity />
-            <SuggestComunity />
-            <SuggestComunity />
-            <SuggestComunity />
-            <SuggestComunity />
-            <SuggestComunity />
-            <SuggestComunity />
+            <SuggestComunity onClick={goToDetail} />
+            <SuggestComunity onClick={goToDetail} />
+            <SuggestComunity onClick={goToDetail} />
+            <SuggestComunity onClick={goToDetail} />
+            <SuggestComunity onClick={goToDetail} />
+            <SuggestComunity onClick={goToDetail} />
+            <SuggestComunity onClick={goToDetail} />
           </div>
 
           {/* bottom={showFixedMenuBar ? '0' : '-20vw'} */}
