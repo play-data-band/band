@@ -5,7 +5,7 @@ import FixedMenuBar from "../Layout/FixedMenuBar";
 import classes from "../../../styles/pages/Main.module.css";
 import myClasses from "../../../styles/pages/MyPage.module.css";
 import set from "../../../asset/images/setblack.png";
-import Carousel2 from "../../blocks/Carousel2";
+import ClassCarousel from "../../blocks/ClassCarousel";
 
 const MyPage = () => {
   const [dummy, setDummy] = useState([
@@ -109,7 +109,7 @@ const MyPage = () => {
         </div>
 
         <div className={myClasses.slideWrap}>
-          <Carousel2 data={dummy} />
+          <ClassCarousel data={dummy} />
         </div>
 
         <div className={myClasses.myPageClassWrap}>
@@ -117,7 +117,7 @@ const MyPage = () => {
         </div>
 
         <div className={myClasses.slideWrap}>
-          <Carousel2 data={dummy} />
+          <ClassCarousel data={dummy} />
         </div>
 
         {/* bottom={showFixedMenuBar ? '0' : '-20vw'} */}

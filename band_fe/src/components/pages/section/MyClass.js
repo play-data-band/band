@@ -8,7 +8,7 @@ import UserClass from "../../blocks/UserClass";
 import {categoryMenu} from "../../../common/Menus";
 import Category from "../../blocks/Category";
 import SuggestComunity from "../../blocks/SuggestComunity";
-import Carousel2 from "../../blocks/Carousel2";
+import ClassCarousel from "../../blocks/ClassCarousel";
 
 const MyClass = () => {
   const [showFixedMenuBar, setShowFixedMenuBar] = useState(false);
@@ -118,7 +118,7 @@ const MyClass = () => {
           </div>
 
           <div className={myClasses.slideWrap}>
-            <Carousel2 data={dummy} />
+            <ClassCarousel data={dummy} />
           </div>
 
           <div className={myClasses.classWrap}>

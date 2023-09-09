@@ -1,13 +1,35 @@
 .classDetailWrap {
-    padding: 0 5vw;
+    width: 100%;
 }
 
 .detailHeader {
-
+    width: 100%;
+    height: 7vh;
+    margin-bottom: 8vw;
+    display: flex;
+    align-items: center;
 }
 
 .detailHeaderWrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 10vw 0vw 5vw 5vw;
+    gap: 4vw;
+}
 
+.detailHeaderWrap h2 {
+    width: 45%;
+    font-weight: 600;
+    font-size: 4.5vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.detailHeaderWrap img {
+    height: 7vw;
+    cursor: pointer;
 }
 
 .back {
@@ -15,7 +37,9 @@
 }
 
 .iconWrap {
-
+    display: flex;
+    align-items: center;
+    gap: 5vw;
 }
 
 .heart {
@@ -69,4 +93,40 @@
     height: 3px;
     background: #333;
     transition: 0.3s ease;
+}
+
+.mainSwiperSection {
+
+}
+
+.classBackground {
+    width: 100%;
+    height: 30vh;
+    background: #d7e0e6;
+    margin-bottom: 3vw;
+}
+
+.classBackground img {
+    width: 100%;
+    height: 100%;
+}
+
+.tags {
+    padding: 0 5vw;
+    display: flex;
+    gap: 2vw;
+    flex-wrap: wrap;
+    margin-bottom: 3vw;
+}
+
+.tagsItem {
+    background: #f1f1f1;
+    padding: 1vw 2vw;
+    border-radius: 20px;
+    font-size: 3vw;
+    color: #333;
+}
+
+.descArea {
+    padding: 0 5vw;
 }

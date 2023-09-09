@@ -12,7 +12,7 @@ import {FreeMode, Pagination} from 'swiper/modules';
 import classes from "../../styles/blocks/Carousel.module.css";
 import piano from "../../asset/images/piano.jpeg";
 
-export default function Carousel2(props) {
+export default function ClassCarousel(props) {
   return (
     <>
       <Swiper
