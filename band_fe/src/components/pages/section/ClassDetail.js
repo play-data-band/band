@@ -7,7 +7,6 @@ import heart from "../../../asset/images/heartborder.png";
 import heartFillImg from "../../../asset/images/heartfill.png";
 import share from "../../../asset/images/share.png";
 import more from "../../../asset/images/morepng.png";
-import classImg from "../../../asset/images/class.jpeg";
 import DetailCarousel from "../../blocks/DetailCarousel";
 import {useNavigate} from "react-router-dom";
 import ClassDetailMain from "../Layout/ClassDetailMain";
