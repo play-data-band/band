@@ -1,5 +1,6 @@
 import React from 'react';
 import myClasses from "../../../styles/pages/ClassDetail.module.css";
+import classes from "../../../styles/pages/ClassDetailBoard.module.css";
 
 const ClassDetailBoard = () => {
   return (

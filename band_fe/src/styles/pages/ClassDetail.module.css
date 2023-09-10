@@ -104,6 +104,7 @@
 .mainSwiperSection {
     width: 100%;
     background: #eff2f5;
+
 }
 
 .classBackground {
@@ -146,11 +147,12 @@
     font-size: 5vw;
 }
 
-.descArea p {
+.descAreaParam {
 
     word-spacing: 0.5vw;
     line-height: 5vw;
     font-size: 4vw;
+    margin-bottom: 8vw;
 }
 
 .scheduleArea {
@@ -263,6 +265,7 @@
     display: flex;
     align-items: center;
     gap: 3vw;
+    margin-bottom: 3.5vw;
 }
 
 .memberLeft {
@@ -300,4 +303,20 @@
     display: flex;
     align-items: center;
     gap: 2vw;
+}
+
+.insertBtnWrap {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.insertBtn {
+    background-color: #6e50ff;
+    color: white;
+    padding: 3vw 10vw;
+    border-radius: 5px;
+    cursor: pointer;
 }
