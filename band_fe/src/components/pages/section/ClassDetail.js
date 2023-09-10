@@ -10,6 +10,10 @@ import more from "../../../asset/images/morepng.png";
 import classImg from "../../../asset/images/class.jpeg";
 import DetailCarousel from "../../blocks/DetailCarousel";
 import {useNavigate} from "react-router-dom";
+import ClassDetailMain from "../Layout/ClassDetailMain";
+import ClassDetailBoard from "../Layout/ClassDetailBoard";
+import ClassDetailAlbum from "../Layout/ClassDetailAlbum";
+import ClassDetailChat from "../Layout/ClassDetailChat";
 
 const ClassDetail = () => {
   const border = useRef();
@@ -35,41 +39,18 @@ const ClassDetail = () => {
 
   const sections = [
     {
-      el : <div className={myClasses.mainSwiperSection}>
-            <div className={myClasses.classBackground}>
-              <img src={classImg} />
-            </div>
-
-            <div className={myClasses.tags}>
-              <div className={myClasses.tagsItem}>독산동 클래스</div>
-              <div className={myClasses.tagsItem}>음악/악기</div>
-              <div className={myClasses.tagsItem}>멤버 <span>60</span></div>
-            </div>
-
-            <div className={myClasses.descArea}>
-              <h2>[독산성인피아노]사랑이 넘치는 곳</h2>
-
-              <p>상냥한 쌤들께 피아노 배우실분</p>
-            </div>
-          </div>
+      el : <ClassDetailMain />
     },
     {
-      el : <div className={myClasses.mainSwiperSection}>
-            <p>게시판 레이아웃..</p>
-          </div>
+      el : <ClassDetailBoard />
     },
     {
-      el : <div className={myClasses.mainSwiperSection}>
-            <p>사진첩 레이아웃..</p>
-          </div>
+      el : <ClassDetailAlbum />
     },
     {
-      el : <div className={myClasses.mainSwiperSection}>
-            <p>채팅 레이아웃..</p>
-          </div>
-    },
-
-  ]
+      el : <ClassDetailChat />
+    }
+  ];
 
   const likeHandler = () => {
     setHeartFill(!heartFill);

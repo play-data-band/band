@@ -8,6 +8,7 @@ import {categoryMenu} from "../../../common/Menus";
 import SuggestComunity from "../../blocks/SuggestComunity";
 import FixedMenuBar from "../Layout/FixedMenuBar";
 import {useNavigate} from "react-router-dom";
+import Loading from "../../atoms/Loading";
 
 const Main = () => {
   const border = useRef();
@@ -17,6 +18,7 @@ const Main = () => {
   const [categoryCount, setCategoryCount] = useState(10);
   const [showFixedMenuBar, setShowFixedMenuBar] = useState(false);
   const nav = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,7 +58,14 @@ const Main = () => {
   }
 
   const goToDetail = () => {
-    nav('/classDetail')
+
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      nav('/classDetail');
+    }, 400);
+
   }
 
   return (
@@ -108,6 +117,7 @@ const Main = () => {
 
           {/* bottom={showFixedMenuBar ? '0' : '-20vw'} */}
           <FixedMenuBar />
+          {loading && <Loading />}
         </div>
       </Mobile>
     </>
