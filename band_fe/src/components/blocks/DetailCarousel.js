@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 // Import Swiper React components
 import {Swiper, SwiperSlide} from 'swiper/react';
 
@@ -17,6 +17,7 @@ export default function DetailCarousel(props) {
     if (swiperRef.current && swiperRef.current.swiper) {
       swiperRef.current.swiper.slideTo(props.activeSlide);
     }
+
   }, [props.activeSlide]);
 
   return (
@@ -34,7 +35,7 @@ export default function DetailCarousel(props) {
         ref={swiperRef}
       >
         {props.section.map((item, idx) => (
-          <SwiperSlide key={idx}>
+          <SwiperSlide key={idx} style={{height : item.height}}>
             {item.el}
           </SwiperSlide>
         ))}

@@ -31,23 +31,32 @@ const ClassDetail = () => {
 
     border.current.style.left = `${idx * 25}%`;
 
+    // 높이를 공유하기 때문에 다른 el 의 높이를 죽여주자..
+
+
 
     // 슬라이드 인덱스를 업데이트
     setActiveSlide(idx);
+
+
   }
 
   const sections = [
     {
-      el : <ClassDetailMain />
+      el : <ClassDetailMain />,
+      height : 'auto'
     },
     {
-      el : <ClassDetailBoard />
+      el : <ClassDetailBoard />,
+      height : 'auto'
     },
     {
-      el : <ClassDetailAlbum />
+      el : <ClassDetailAlbum />,
+      height : 'auto'
     },
     {
-      el : <ClassDetailChat />
+      el : <ClassDetailChat />,
+      height : 'auto'
     }
   ];
 
