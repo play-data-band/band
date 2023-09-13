@@ -10,7 +10,8 @@ export const login = async (userId, userPwd) => {
     profileImgPath : null,
     mbti : null,
     token : null,
-    userSeq : null
+    userSeq : null,
+    interest : []
   }
 
   try {
@@ -21,7 +22,6 @@ export const login = async (userId, userPwd) => {
 
       const jwtToken = 'Bearer ' + response.data.data.token;
 
-
       res.isLogin = true;
       res.id = response.data.data.email;
       res.username = response.data.data.username;
@@ -29,6 +29,7 @@ export const login = async (userId, userPwd) => {
       res.mbti = response.data.data.mbti;
       res.token = jwtToken;
       res.userSeq = response.data.data.userId;
+      res.interest = response.data.data.interests;
 
       // 토큰 인증 성공시 모든 API에 기본 요청 토큰 설정..
       apiClient.interceptors.request.use((config) => {

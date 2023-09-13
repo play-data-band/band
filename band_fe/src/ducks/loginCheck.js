@@ -7,7 +7,8 @@ const initialIsLoginState = {
       username : null,
       profileImgPath : null,
       mbti : null,
-      userSeq : null
+      userSeq : null,
+      interest : [],
   },
 
   teacherLoginInfo : {

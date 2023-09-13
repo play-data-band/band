@@ -7,11 +7,14 @@ import Button from "../../atoms/Button";
 import {categoryMenu} from "../../../common/Menus";
 import {useState} from "react";
 import Loading from "../../atoms/Loading";
+import {userInterestSave} from "../../../common/api/ApiPostService";
+import {useSelector} from "react-redux";
 
 const UserCategoryType = () => {
   const nav = useNavigate();
   const [selectedIndexes, setSelectedIndexes] = useState([]); // 선택한 항목의 인덱스 배열
   const [loading, setLoading] = useState(false);
+  const isLogin = useSelector(state => state.loginCheck.loginInfo);
 
   const toggleItem = (index) => {
     // 선택한 항목의 인덱스를 토글
@@ -38,22 +41,23 @@ const UserCategoryType = () => {
     nav('/');
   }
 
-  const categorySave = () => {
+  const categorySave = async () => {
     const selectedItems = categoryMenu.filter((_, idx) => isItemSelected(idx)).map((item) => item.menuName);
-
 
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      console.log(selectedItems);
+    try {
+      for (const item of selectedItems) {
+        const res = await userInterestSave(item, isLogin.userSeq);
+      }
+
       nav('/main');
-    }, 700);
-  }
-
-
-
-
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div style={{height : '100vh'}}>

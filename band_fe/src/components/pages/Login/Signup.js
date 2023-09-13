@@ -24,6 +24,7 @@ const Signup = () => {
   const [userName, setUserName] = useState('');
   const [userMbti, setUserMbti] = useState('');
   const [userFile, setUserFile] = useState('');
+  const [userId, setUserId] = useState('');
   const [userProfilePath, setUserProfilePath] = useState('');
   const [signupVisitPath, setSignupVisitPath] = useState('');
   const dispatch = useDispatch();
@@ -71,8 +72,19 @@ const Signup = () => {
 
         // 회원가입 성공 시..
         if (res.data.status == "success") {
-          setSignupVisitPath('/');
-          setIsMsgPopupOpen({show: true, msg: res.data.data});
+
+          const loginInfo = {
+              isLogin : false,
+              id : null,
+              username : null,
+              profileImgPath : null,
+              mbti : null,
+              userSeq : res.data.data
+          }
+
+          dispatch(loginCheckAction.loginInfoSet(loginInfo));
+
+          nav('/category');
         }
 
       }).catch((err) => {
