@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Mobile, PC} from "../../config/Responsive";
 import MyPageHeader from "../Layout/MyPageHeader";
 import FixedMenuBar from "../Layout/FixedMenuBar";
@@ -6,8 +6,23 @@ import classes from "../../../styles/pages/Main.module.css";
 import myClasses from "../../../styles/pages/MyPage.module.css";
 import set from "../../../asset/images/setblack.png";
 import ClassCarousel from "../../blocks/ClassCarousel";
+import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const MyPage = () => {
+  const userInfo = useSelector(state => state.loginCheck.loginInfo);
+  const nav = useNavigate();
+
+  useEffect(() => {
+
+    if (!userInfo.isLogin) {
+      nav('/');
+      return;
+    }
+
+  }, []);
+
+
   const [dummy, setDummy] = useState([
     {
       title : '친목 피아노 모임',
@@ -80,13 +95,14 @@ const MyPage = () => {
         <div className={myClasses.myArea}>
           <div className={myClasses.myAreaLeft}>
             <div className={myClasses.myProfileImg}>
+              <img className={myClasses.myProfileImgInner} src={userInfo.profileImgPath} />
               <div className={myClasses.modiImg}>
                 <img src={set} />
               </div>
             </div>
           </div>
           <div className={myClasses.myAreaRight}>
-            <h2>이동명</h2>
+            <h2>{userInfo.username}</h2>
             <p>
               <span>경기도</span>
               <span>1994.09.11</span>

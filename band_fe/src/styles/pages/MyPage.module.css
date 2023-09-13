@@ -23,9 +23,16 @@
 .myProfileImg {
     width: 100%;
     height: 100%;
-    background: #1877f2;
+    border: 1px solid #eee;
     border-radius: 50%;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.myProfileImgInner {
+    height: 100%;
 }
 
 .modiImg {
@@ -51,6 +58,10 @@
     display: flex;
     flex-direction: column;
     gap: 2vw ;
+}
+
+.myAreaRight span {
+    margin-right: 1vw;
 }
 
 .myAreaRight h2 {

@@ -3,12 +3,16 @@ import {createSlice} from "@reduxjs/toolkit";
 const initialIsLoginState = {
   loginInfo : {
       isLogin : false,
-      address : null,
-      deliveries : null,
       id : null,
       username : null,
-      memberSeq : null,
-      phoneNum : null
+      profileImgPath : null,
+      mbti : null,
+      userSeq : null
+  },
+
+  teacherLoginInfo : {
+    email : null,
+    username : null
   }
 }
 
@@ -19,6 +23,10 @@ const loginCheckSlise = createSlice({
 
     loginInfoSet(state, action) {
       state.loginInfo = action.payload;
+    },
+
+    teacherLoginInfoSet(state, action) {
+      state.teacherLoginInfo = action.payload;
     },
 
     isLogin(state, action) {
