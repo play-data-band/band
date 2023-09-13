@@ -3,8 +3,10 @@ import classes from "../../../styles/pages/FixedMenuBar.module.css";
 import home from "../../../asset/images/home.png";
 import mypage from "../../../asset/images/mypage.png";
 import {useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const FixedMenuBar = (props) => {
+  const userInfo = useSelector(state => state.loginCheck.loginInfo);
 
   const nav = useNavigate();
   const linkMethod = (path) => {
@@ -23,7 +25,9 @@ const FixedMenuBar = (props) => {
             <p>내모임</p>
           </li>
           <li onClick={() => {linkMethod('/myPage')}}>
-            <div className={classes.myImg}></div>
+            <div className={classes.myImg}>
+              <img src={userInfo.profileImgPath} />
+            </div>
             <p>내정보</p>
           </li>
         </ul>

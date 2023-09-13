@@ -9,6 +9,8 @@ import {categoryMenu} from "../../../common/Menus";
 import Category from "../../blocks/Category";
 import SuggestComunity from "../../blocks/SuggestComunity";
 import ClassCarousel from "../../blocks/ClassCarousel";
+import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const MyClass = () => {
   const [showFixedMenuBar, setShowFixedMenuBar] = useState(false);
@@ -16,6 +18,9 @@ const MyClass = () => {
   const [categoryCount, setCategoryCount] = useState(10);
   const [categoryMenuLength, setCategoryMenuLength] = useState(categoryMenu.length);
   const [categoryMoreText, setCategoryMoreText] = useState(true);
+  const userInfo = useSelector(state => state.loginCheck.loginInfo);
+  const nav = useNavigate();
+
   const [dummy, setDummy] = useState([
     {
       title : '친목 피아노 모임',
@@ -76,6 +81,11 @@ const MyClass = () => {
   ]);
 
   useEffect(() => {
+
+    if (!userInfo.isLogin) {
+      nav('/');
+      return;
+    }
     const handleScroll = () => {
       // 여기에 스크롤 이벤트 핸들링 로직을 추가
       if (window.scrollY > 0) {

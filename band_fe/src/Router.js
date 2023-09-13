@@ -6,6 +6,8 @@ import Main from "./components/pages/section/Main";
 import MyClass from "./components/pages/section/MyClass";
 import MyPage from "./components/pages/section/MyPage";
 import ClassDetail from "./components/pages/section/ClassDetail";
+import TeacherSignup from "./components/pages/Login/TeacherSignup";
+import TeacherMiddleWare from "./components/pages/Login/TeacherMiddleWare";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
   {
     path : '/classDetail',
     element : <ClassDetail />,
+  },
+  {
+    path : '/auth',
+    element : <TeacherMiddleWare />,
+  },
+  {
+    path : '/authSignup',
+    element : <TeacherSignup />,
   },
 ]);
 

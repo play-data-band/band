@@ -9,6 +9,8 @@ import SuggestComunity from "../../blocks/SuggestComunity";
 import FixedMenuBar from "../Layout/FixedMenuBar";
 import {useNavigate} from "react-router-dom";
 import Loading from "../../atoms/Loading";
+import {myTokenInfo} from "../../../common/api/ApiGetService";
+import {useSelector} from "react-redux";
 
 const Main = () => {
   const border = useRef();
@@ -19,8 +21,15 @@ const Main = () => {
   const [showFixedMenuBar, setShowFixedMenuBar] = useState(false);
   const nav = useNavigate();
   const [loading, setLoading] = useState(false);
+  const isLogin = useSelector(state => state.loginCheck.loginInfo.isLogin);
 
   useEffect(() => {
+
+    if (!isLogin) {
+      nav('/');
+      return;
+    }
+
     window.scrollTo(0, 0);
     const handleScroll = () => {
       // 여기에 스크롤 이벤트 핸들링 로직을 추가
