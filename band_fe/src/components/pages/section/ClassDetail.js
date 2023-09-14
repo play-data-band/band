@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import classes from "../../../styles/pages/Main.module.css";
 import myClasses from "../../../styles/pages/ClassDetail.module.css";
 import {Mobile, PC} from "../../config/Responsive";
@@ -20,6 +20,9 @@ const ClassDetail = () => {
   const [heartFill, setHeartFill] = useState(false);
   const nav = useNavigate();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const borderAction = (idx) => {
 

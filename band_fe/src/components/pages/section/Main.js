@@ -9,9 +9,13 @@ import SuggestComunity from "../../blocks/SuggestComunity";
 import FixedMenuBar from "../Layout/FixedMenuBar";
 import {useNavigate} from "react-router-dom";
 import Loading from "../../atoms/Loading";
-import {interestCommunityGet} from "../../../common/api/ApiGetService";
+import {
+  interestCommunityGet,
+  interestNewCommunityGet, test222
+} from "../../../common/api/ApiGetService";
 import {useSelector} from "react-redux";
-import {userRecommandCommunity} from "../../../common/api/ApiPostService";
+import {interestCommunityScheduleGet, userRecommandCommunity} from "../../../common/api/ApiPostService";
+import SuggestSchedule from "../../blocks/SuggestSchedule";
 
 const Main = () => {
   const border = useRef();
@@ -27,11 +31,17 @@ const Main = () => {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [categorySelect, setCategorySelect] = useState(false);
+  const [newCategorySelect, setNewCategorySelect] = useState(false);
   const [selectMenuName, setSelectMenuName] = useState('');
+  const [mainFirstReq, setMainFirstReq] = useState(true);
+  const [scheduleArea, setScheduleArea] = useState(false);
+  const [scheduleArray, setScheduleArray] = useState([]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, [])
 
+  useEffect(() => {
     // 로그인 아니면 튕굼..
     if (!userInfo.isLogin) {
       nav('/');
@@ -49,7 +59,11 @@ const Main = () => {
     userRecommandCommunity(array, page, size).then((res) => {
 
       if (res.status === 200) {
-        setCommunityList(res.data.content);
+        if (mainFirstReq) {
+          setCommunityList(res.data.content);
+          setMainFirstReq(false);
+        }
+
       }
 
     }).catch((err) => {
@@ -64,7 +78,7 @@ const Main = () => {
       window.removeEventListener('scroll', handleScroll);
     };
 
-  }, [categorySelect, selectMenuName]);
+  }, [categorySelect, selectMenuName, scheduleArea]);
 
   const handleScroll = () => {
 
@@ -76,6 +90,35 @@ const Main = () => {
     // 스크롤이 페이지 하단에 도달
     if (scrollTop + windowHeight + 1 >= documentHeight) {
       setPage(page + 1);
+
+      // 일정 인피니티 스크롤
+      if (scheduleArea) {
+        setLoading(true);
+
+        // 빈 arr 만들어서..
+        const array = [];
+
+        // arr에 저장..
+        userInfo.interest.forEach((item, idx) => {
+          array.push(item.interest);
+        })
+
+        setTimeout(() => {
+          setLoading(false);
+
+          interestCommunityScheduleGet(array).then((res) => {
+            if(res.status === 200) {
+              const newData = res.data;
+              setScheduleArray(prevData => [...prevData, ...newData]);
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
+
+        }, 500);
+
+        return ;
+      }
 
       // 카테고리 인피니티 스크롤..
       if (categorySelect) {
@@ -95,11 +138,32 @@ const Main = () => {
           })
         }, 500);
 
+        return ;
+      }
 
+      // 신규모임 인피니티 스크롤
+      if(newCategorySelect) {
+        setLoading(true);
 
+        setTimeout(() => {
+
+          interestNewCommunityGet(selectMenuName, page, size).then((res) => {
+            setLoading(false);
+
+            if(res.status === 200) {
+              const newData = res.data.content;
+              setCommunityList(prevData => [...prevData, ...newData]);
+            }
+
+          }).catch((err) => {
+
+          })
+        }, 500);
 
         return ;
       }
+
+
 
       // 일반 main 에서 인피니티 스크롤..
       const array = [];
@@ -130,11 +194,83 @@ const Main = () => {
   const borderAction = (idx) => {
 
     if (idx === 0) {
+      setScheduleArea(false);
       border.current.style.left = '0%';
+
+      setLoading(true);
+      // 빈 arr 만들어서..
+      const array = [];
+
+      // arr에 저장..
+      userInfo.interest.forEach((item, idx) => {
+        array.push(item.interest);
+      })
+
+      setTimeout(() => {
+        userRecommandCommunity(array, 0, 10).then((res) => {
+          setLoading(false);
+          if (res.status === 200) {
+            setCommunityList(res.data.content);
+            setMainFirstReq(false);
+          }
+
+        }).catch((err) => {
+
+        })
+
+      }, 400);
+
+
       return ;
     }
 
     border.current.style.left = `${idx * 33.3}%`;
+
+    if(idx === 1) {
+      setLoading(true);
+
+      // 빈 arr 만들어서..
+      const array = [];
+
+      // arr에 저장..
+      userInfo.interest.forEach((item, idx) => {
+        array.push(item.interest);
+      })
+
+      setTimeout(() => {
+        setLoading(false);
+        setScheduleArea(true);
+
+        interestCommunityScheduleGet(array).then((res) => {
+          console.log(res.data)
+          setScheduleArray(res.data);
+        }).catch((err) => {
+          console.log(err);
+        })
+
+      }, 500)
+
+    }
+
+    if (idx === 2) {
+      setScheduleArea(false);
+      setNewCategorySelect(true);
+      setLoading(true);
+
+      interestNewCommunityGet(0, 10).then((res) => {
+
+        setTimeout(() => {
+          setLoading(false);
+          setCommunityList(res.data.content);
+        }, 400);
+
+      }).catch((err) => {
+
+      })
+
+    }
+
+
   }
 
   const categoryMoreShow = () => {
@@ -172,7 +308,30 @@ const Main = () => {
 
       })
 
-    }, 400);
+    }, 500);
+  }
+
+  const mainCategoryGet = () => {
+    const array = [];
+
+    // arr에 저장..
+    userInfo.interest.forEach((item, idx) => {
+      array.push(item.interest);
+    })
+
+    userRecommandCommunity(array, page, size).then((res) => {
+
+      if (res.status === 200) {
+        if (mainFirstReq) {
+          setCommunityList(res.data.content);
+          setMainFirstReq(false);
+        }
+
+      }
+
+    }).catch((err) => {
+
+    })
   }
 
   return (
@@ -212,14 +371,17 @@ const Main = () => {
             <p onClick={categoryMoreShow} className={classes.categoryMoreAreaParam}>{categoryMoreText ? '카테고리 더보기' : '카테고리 접기'}</p>
           </div>
 
-          <div className={classes.suggestionWrap}>
+          {!scheduleArea && <div className={classes.suggestionWrap}>
             {communityList.map((item, idx) => (
               <SuggestComunity data={item} key={idx} onClick={goToDetail} />
             ))}
-          </div>
+          </div>}
+          {scheduleArea && <div className={classes.suggestionWrap}>
+            {scheduleArray.map((item, idx) => (
+              <SuggestSchedule data={item} key={idx} />
+            ))}
+          </div>}
 
-
-          {/* bottom={showFixedMenuBar ? '0' : '-20vw'} */}
           <FixedMenuBar />
           {loading && <Loading />}
         </div>

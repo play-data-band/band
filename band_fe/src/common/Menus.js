@@ -62,11 +62,6 @@ export const categoryMenu = [
     imgPath : dance
   },
   {
-    key : 'donation',
-    menuName: '봉사활동',
-    imgPath : donation
-  },
-  {
     key : 'coffee',
     menuName: '사교/인맥',
     imgPath : coffee
@@ -80,11 +75,6 @@ export const categoryMenu = [
     key : 'cam',
     menuName: '사진/영상',
     imgPath : camera
-  },
-  {
-    key : 'baseball',
-    menuName: '야구관람',
-    imgPath : baseball
   },
   {
     key : 'game',

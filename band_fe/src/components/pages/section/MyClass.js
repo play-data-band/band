@@ -11,6 +11,8 @@ import SuggestComunity from "../../blocks/SuggestComunity";
 import ClassCarousel from "../../blocks/ClassCarousel";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import Loading from "../../atoms/Loading";
+import {interestCommunityGet} from "../../../common/api/ApiGetService";
 
 const MyClass = () => {
   const [showFixedMenuBar, setShowFixedMenuBar] = useState(false);
@@ -18,6 +20,14 @@ const MyClass = () => {
   const [categoryCount, setCategoryCount] = useState(10);
   const [categoryMenuLength, setCategoryMenuLength] = useState(categoryMenu.length);
   const [categoryMoreText, setCategoryMoreText] = useState(true);
+  const [findCategoryText, setFindCategoryText] = useState('운동/스포츠');
+  const [loading, setLoading] = useState(false);
+  const [communityList, setCommunityList] = useState([])
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+  const [mainFirstReq, setMainFirstReq] = useState(false);
+
+
   const userInfo = useSelector(state => state.loginCheck.loginInfo);
   const nav = useNavigate();
 
@@ -86,6 +96,20 @@ const MyClass = () => {
       nav('/');
       return;
     }
+
+    interestCommunityGet(findCategoryText, page, size).then((res) => {
+
+      if(res.status === 200) {
+
+        setLoading(false);
+        setCommunityList(res.data.content);
+      }
+
+
+    }).catch((err) => {
+
+    })
+
     const handleScroll = () => {
       // 여기에 스크롤 이벤트 핸들링 로직을 추가
       if (window.scrollY > 0) {
@@ -94,6 +118,38 @@ const MyClass = () => {
       } else {
         // 스크롤을 가장 위로 올릴 때
         setShowFixedMenuBar(false);
+      }
+
+
+      // 스크롤 위치 계산
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+
+      if (scrollTop + windowHeight + 1 >= documentHeight) {
+
+        // 선택후 인피니티..
+        if (mainFirstReq) {
+          setLoading(true);
+
+          setTimeout(() => {
+            interestCommunityGet(findCategoryText, page, 5).then((res) => {
+              setLoading(false);
+
+              if(res.status === 200) {
+                const newData = res.data.content;
+                setCommunityList(prevData => [...prevData, ...newData]);
+              }
+
+            }).catch((err) => {
+
+            })
+          }, 500);
+
+          return ;
+        }
+
       }
     };
 
@@ -104,12 +160,50 @@ const MyClass = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [findCategoryText]);
 
   const categoryMoreShow = () => {
     setIsCategoryMore(!isCategoryMore);
     setCategoryMoreText(false);
   }
+
+  const findClassHandler = (data) => {
+    setLoading(true);
+    setMainFirstReq(true);
+
+
+    setTimeout(() => {
+      setLoading(false);
+
+      interestCommunityGet(data).then((res) => {
+
+        if(res.status === 200) {
+
+          setLoading(false);
+          setCommunityList(res.data.content);
+        }
+
+
+      }).catch((err) => {
+
+      })
+
+      setFindCategoryText(data);
+    }, 500);
+
+  }
+
+  const goToDetail = () => {
+
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      nav('/classDetail');
+    }, 400);
+
+  }
+
 
 
   return (
@@ -148,7 +242,7 @@ const MyClass = () => {
 
           <div className={classes.categoryArea}>
             {(isCategoryMore ? categoryMenu.slice(0, categoryCount) : categoryMenu.slice(0, categoryMenuLength)).map((item, idx) => (
-              <div key={idx}  className={classes.categoryAreaWrap}>
+              <div key={idx} onClick={() => {findClassHandler(item.menuName)}}  className={classes.categoryAreaWrap}>
                 <Category mb='2vw' textWidth='auto' color='#333' width='13vw' height='13vw' imgPath={item.imgPath} value={item.menuName} />
               </div>
             ))}
@@ -159,20 +253,19 @@ const MyClass = () => {
           </div>
 
           <div className={myClasses.classWrap}>
-            <div><h2 className={myClasses.titleText}><span>음악/악기</span> 맞춤추천</h2></div>
+            <div><h2 className={myClasses.titleText}><span>{findCategoryText}</span> 맞춤추천</h2></div>
           </div>
 
           <div className={myClasses.suggestionPadding}>
-            <SuggestComunity />
-            <SuggestComunity />
-            <SuggestComunity />
-            <SuggestComunity />
-            <SuggestComunity />
+            {communityList.map((item, idx) => (
+              <SuggestComunity key={idx} data={item} key={idx} onClick={goToDetail} />
+            ))}
           </div>
 
           {/* bottom={showFixedMenuBar ? '0' : '-20vw'} */}
           <FixedMenuBar />
         </div>
+        {loading && <Loading />}
       </Mobile>
     </>
   );

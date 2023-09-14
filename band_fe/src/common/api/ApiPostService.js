@@ -11,6 +11,10 @@ export const userLogin = (email, password) => apiClient.post(`/api/v1/user/login
   password
 })
 
+export const interestCommunityScheduleGet = (interest) => apiClient.post('/api/v1/schedule/upcomingByInterest', {
+  interest
+})
+
 export const signup = (email, password, name, mbti, imgPath) => apiClient.post(`/api/v1/user`, {
   email,
   password,
@@ -26,6 +30,6 @@ export const userRecommandCommunity = (interestArray, page, size) => apiClient.p
   }
 });
 
-export const userInterestSave = (interest, userId) => apiClient.post(`http://localhost:8000/api/v1/interest/${userId}`, {
+export const userInterestSave = (interest, userId) => apiClient.post(`/api/v1/interest/${userId}`, {
   interest
 })
