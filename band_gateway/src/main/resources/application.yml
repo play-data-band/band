@@ -21,10 +21,30 @@ spring:
       routes:
         # example template..
 
-        #- id: auth-service
-        #  uri: "lb://AUTH-SERVICE"
-        #  predicates:
-        #    - Path=/api/v1/auth/**
+        - id: board-service
+          uri: "lb://BOARD-SERVICE"
+          predicates:
+            - Path=/api/v1/comment/**
+
+        - id: LIKE-SERVICE
+          uri: "lb://LIKE-SERVICE"
+          predicates:
+            - Path=/api/v1/like/**
+
+        - id: ALBUM-SERVICE
+          uri: "lb://ALBUM-SERVICE"
+          predicates:
+            - Path=/api/v1/album/**
+
+        - id: SCHEDULE-SERVICE
+          uri: "lb://SCHEDULE-SERVICE"
+          predicates:
+            - Path=/api/v1/scedule/**
+
+        - id: BAND-USER-SERVICE
+          uri: "lb://BAND-USER-SERVICE"
+          predicates:
+            - Path=/api/v1/bandMember/**
 
 # Config Server Observing Update..
 management:
