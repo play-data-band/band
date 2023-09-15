@@ -13,16 +13,78 @@ import ClassDetailMain from "../Layout/ClassDetailMain";
 import ClassDetailBoard from "../Layout/ClassDetailBoard";
 import ClassDetailAlbum from "../Layout/ClassDetailAlbum";
 import ClassDetailChat from "../Layout/ClassDetailChat";
+import {findByCommunityById, findByCommunityCount} from "../../../common/api/ApiGetService";
+import {useSelector} from "react-redux";
+import PopupDom from "../../blocks/PopupDom";
+import MsgPopup from "../../blocks/MsgPopup";
+import ConfirmPopup from "../../blocks/ConfirmPopup";
+import {communityInsert, communityMemberDelete} from "../../../common/api/ApiPostService";
+import Loading from "../../atoms/Loading";
 
 const ClassDetail = () => {
   const border = useRef();
   const [activeSlide, setActiveSlide] = useState(0); // 현재 활성화된 슬라이드 인덱스 상태
   const [heartFill, setHeartFill] = useState(false);
+  const [communityInfo, setCommunityInfo] = useState({});
+  const [communityCount, setCommunityCount] = useState('');
+  const [communitiyId, setCommunitiyId] = useState(0);
+  const [isMsgPopupOpen, setIsMsgPopupOpen] = useState({show : false, msg: ''});
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState({show : false, msg: '', gb : ''});
+  const userInfo = useSelector(state => state.loginCheck.loginInfo);
+  const [isCommunityMember, setIsCommunityMember] = useState(false);
+  const [loading, setLoading] = useState(false);
   const nav = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    const queryString = window.location.search;
+
+    const urlParams = new URLSearchParams(queryString);
+
+    const detailValue = urlParams.get('detail');
+
+    setCommunitiyId(urlParams.get('detail'));
+
+    // 커뮤니티 상세정보 GET..
+    findByCommunityById(detailValue).then((res) => {
+      if (res.status === 200) {
+        setCommunityInfo(res.data);
+      }
+    }).catch((err) => {
+      console.log(err);
+    });
+
+    findByCommunityCountHandler(detailValue);
+
+
+
   }, []);
+
+  const findByCommunityCountHandler = (defaultId) => {
+
+    // 특정 커뮤니티의 가입 리스트..
+    findByCommunityCount(defaultId).then((res) => {
+
+      if(res.status === 200) {
+
+        if (res.data.length === 0) {
+          setIsCommunityMember(false);
+        }
+
+        res.data.forEach((item, idx) => {
+          if (item.memberId == userInfo.userSeq) {
+            setIsCommunityMember(true);
+          }
+        })
+
+        setCommunityCount(res.data);
+      }
+
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
 
   const borderAction = (idx) => {
 
@@ -44,7 +106,7 @@ const ClassDetail = () => {
 
   const sections = [
     {
-      el : <ClassDetailMain />,
+      el : <ClassDetailMain setIsConfirmPopupOpen={setIsConfirmPopupOpen} isCommunityMember={isCommunityMember} communitiyId={communitiyId} communityInfo={communityInfo} communityCount={communityCount} />,
       //height: 'auto'
     },
     {
@@ -69,6 +131,51 @@ const ClassDetail = () => {
     nav(-1);
   }
 
+  const closeMsgPopup = () => {
+    setIsMsgPopupOpen({show: false, msg: ''});
+  }
+
+  const closeConfirmPopup = () => {
+    setIsConfirmPopupOpen({show: false, msg: ''});
+  }
+
+  const confirmHandler = () => {
+    setLoading(true);
+
+    if (isConfirmPopupOpen.gb === 'community') {
+
+      setTimeout(() => {
+        communityInsert(communitiyId, userInfo.userSeq, userInfo.username, "CUSTOMER", userInfo.profileImgPath, communityInfo.description, communityInfo.profileImage).then((res) => {
+          setLoading(false);
+
+          findByCommunityCountHandler(communitiyId);
+
+          setIsConfirmPopupOpen({ show: false, msg: '', gb : '' });
+        }).catch((err) => {
+          console.log(err);
+        })
+
+      }, 500);
+
+      return ;
+    }
+
+    if (isConfirmPopupOpen.gb === 'communityCancel') {
+      setTimeout(() => {
+
+        communityMemberDelete(userInfo.userSeq, communitiyId).then((res) => {
+          setLoading(false);
+          findByCommunityCountHandler(communitiyId);
+
+          setIsConfirmPopupOpen({ show: false, msg: '', gb : '' });
+        }).catch((err) => {
+          console.log(err);
+        })
+
+      }, 500);
+    }
+  }
+
   return (
     <div>
       <PC>
@@ -83,7 +190,7 @@ const ClassDetail = () => {
             <div className={myClasses.back} onClick={backHandler}>
               <img src={back} />
             </div>
-            <h2>피아노를 사랑하는 사람들의 모임</h2>
+            <h2>{communityInfo.description}</h2>
             <div className={myClasses.iconWrap}>
               <div className={myClasses.heart} onClick={likeHandler}>
                 <img src={heartFill ? heart : heartFillImg} />
@@ -113,6 +220,15 @@ const ClassDetail = () => {
 
         <DetailCarousel activeSlide={activeSlide} onSlideChange={borderAction} section={sections} />
 
+      </div>
+      {loading && <Loading />}
+      <div id='popupDom'>
+        {isMsgPopupOpen.show && <PopupDom>
+          <MsgPopup onClick={closeMsgPopup} msg={isMsgPopupOpen.msg} />
+        </PopupDom>}
+        {isConfirmPopupOpen.show && <PopupDom>
+          <ConfirmPopup onConfirm={confirmHandler} onClick={closeConfirmPopup} msg={isConfirmPopupOpen.msg} />
+        </PopupDom>}
       </div>
       </Mobile>
     </div>

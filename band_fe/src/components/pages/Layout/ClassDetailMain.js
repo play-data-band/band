@@ -1,18 +1,32 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import myClasses from "../../../styles/pages/ClassDetail.module.css";
 import classImg from "../../../asset/images/class.jpeg";
 import newImg from "../../../asset/images/new.png";
+import {communityInsert} from "../../../common/api/ApiPostService";
+import {useSelector} from "react-redux";
 
 const ClassDetailMain = (props) => {
 
   const [dummy, setDummy] = useState([1,2,3])
   const [schedule, setSchedule] = useState(false);
   const [scheduleStates, setScheduleStates] = useState(dummy.map(() => false));
+  const userInfo = useSelector(state => state.loginCheck.loginInfo);
+
 
   const scheduleHandler = (idx) => {
     const newScheduleStates = [...scheduleStates];
     newScheduleStates[idx] = !newScheduleStates[idx];
     setScheduleStates(newScheduleStates);
+  }
+
+  const communityInsertHandler = () => {
+
+    props.setIsConfirmPopupOpen({ show: true, msg: '모임에 가입 하시겠습니까 ?', gb : 'community' });
+
+  }
+
+  const communityInsertCancelHandler = () => {
+    props.setIsConfirmPopupOpen({ show: true, msg: '모임을 취소 하시겠습니까 ?', gb : 'communityCancel' });
   }
 
 
@@ -21,22 +35,24 @@ const ClassDetailMain = (props) => {
       <div className={myClasses.mainSwiperSection}>
         <div className={myClasses.background}>
           <div className={myClasses.classBackground}>
-            <img src={classImg} />
+            <img src={props.communityInfo.profileImage} />
           </div>
 
           <div className={myClasses.tags}>
             <div className={myClasses.tagsItem}>독산동 클래스</div>
-            <div className={myClasses.tagsItem}>음악/악기</div>
-            <div className={myClasses.tagsItem}>멤버 <span>60</span></div>
+            <div className={myClasses.tagsItem}>{props.communityInfo.interest}</div>
+            <div className={myClasses.tagsItem}>멤버 <span>{props.communityCount.length === 0 ? '없음' : props.communityCount.length}</span></div>
           </div>
 
           <div className={myClasses.descArea}>
-            <h2>[독산성인피아노]사랑이 넘치는 곳</h2>
+            <h2>{props.communityInfo.description}</h2>
 
-            <p className={myClasses.descAreaParam}>상냥한 쌤들께 피아노 배우실분 !</p>
+            <p className={myClasses.descAreaParam}>{props.communityInfo.description}</p>
 
             <div className={myClasses.insertBtnWrap}>
-              <div className={myClasses.insertBtn}><p>가입하기</p></div>
+              {!props.isCommunityMember && <div onClick={communityInsertHandler} className={myClasses.insertBtn}><p>가입하기</p></div>}
+              {props.isCommunityMember && <div onClick={communityInsertCancelHandler} className={myClasses.insertBtn}><p>취소하기</p></div>}
+
             </div>
           </div>
 

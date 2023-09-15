@@ -241,8 +241,6 @@ const Main = () => {
         setScheduleArea(true);
 
         interestCommunityScheduleGet(array).then((res) => {
-          debugger
-          console.log(res.data)
           setScheduleArray(res.data);
         }).catch((err) => {
           console.log(err);
@@ -278,13 +276,12 @@ const Main = () => {
     setCategoryMoreText(false);
   }
 
-  const goToDetail = () => {
-
+  const goToDetail = (data) => {
     setLoading(true);
 
     setTimeout(() => {
       setLoading(false);
-      nav('/classDetail');
+      nav(`/classDetail?detail=${data.id}`);
     }, 400);
 
   }
@@ -373,7 +370,7 @@ const Main = () => {
 
           {!scheduleArea && <div className={classes.suggestionWrap}>
             {communityList.map((item, idx) => (
-              <SuggestComunity data={item} key={idx} onClick={goToDetail} />
+              <SuggestComunity data={item} key={idx} onClick={() => goToDetail(item)} />
             ))}
           </div>}
           {scheduleArea && <div className={classes.suggestionWrap}>

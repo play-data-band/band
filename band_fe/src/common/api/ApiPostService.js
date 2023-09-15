@@ -33,6 +33,14 @@ export const userRecommandCommunity = (interestArray, page, size) => apiClient.p
 export const userInterestSave = (interest, userId) => apiClient.post(`/api/v1/interest/${userId}`, {
   interest
 })
+export const communityInsert = (communityId, memberId, memberName, memberRole, memberImage, communityName, communityImage) => apiClient.post(`http://192.168.0.229:8000/api/v1/communitymember/${communityId}`, {
+  memberId,
+  memberName,
+  memberRole,
+  memberImage,
+  communityName,
+  communityImage
+})
 
 export const userChatMsg = (communityId, memberId, memberName, memberImage, content) => apiClient.post('http://192.168.0.229:9090/api/v1/chattings', {
   communityId,
@@ -41,3 +49,5 @@ export const userChatMsg = (communityId, memberId, memberName, memberImage, cont
   memberImage,
   content
 })
+
+export const communityMemberDelete = (memberId, communityId) => apiClient.delete(`http://192.168.0.229:8000/api/v1/communitymember/memberid/${memberId}/communityid/${communityId}`);
