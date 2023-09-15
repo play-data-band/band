@@ -105,6 +105,8 @@
     width: 100%;
     background: #eff2f5;
 
+    height: calc(100vh - 20vh);
+    overflow-y: scroll;
 }
 
 .classBackground {
@@ -319,4 +321,20 @@
     padding: 3vw 10vw;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.classDetailMain {
+
+}
+
+.classDetailBoard {
+
+}
+
+.classDetailAlbum {
+
+}
+
+.classDetailChat {
+
 }

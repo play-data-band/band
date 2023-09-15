@@ -33,10 +33,13 @@ export default function DetailCarousel(props) {
         }}
         initialSlide={props.activeSlide}
         ref={swiperRef}
+        style={{height : 'calc(100vh - 19vh)'}}
       >
         {props.section.map((item, idx) => (
-          <SwiperSlide key={idx} style={{height : item.height}}>
-            {item.el}
+          <SwiperSlide key={idx}>
+            <div>
+              {item.el}
+            </div>
           </SwiperSlide>
         ))}
 

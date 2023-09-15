@@ -33,3 +33,11 @@ export const userRecommandCommunity = (interestArray, page, size) => apiClient.p
 export const userInterestSave = (interest, userId) => apiClient.post(`/api/v1/interest/${userId}`, {
   interest
 })
+
+export const userChatMsg = (communityId, memberId, memberName, memberImage, content) => apiClient.post('http://192.168.0.229:9090/api/v1/chattings', {
+  communityId,
+  memberId,
+  memberName,
+  memberImage,
+  content
+})

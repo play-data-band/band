@@ -37,29 +37,27 @@ const ClassDetail = () => {
     // 높이를 공유하기 때문에 다른 el 의 높이를 죽여주자..
 
 
-
     // 슬라이드 인덱스를 업데이트
     setActiveSlide(idx);
-
 
   }
 
   const sections = [
     {
       el : <ClassDetailMain />,
-      height : 'auto'
+      //height: 'auto'
     },
     {
       el : <ClassDetailBoard />,
-      height : 'auto'
+      //height: '100%'
     },
     {
       el : <ClassDetailAlbum />,
-      height : 'auto'
+      //height: '100%'
     },
     {
       el : <ClassDetailChat />,
-      height : 'auto'
+      //height: '100%'
     }
   ];
 

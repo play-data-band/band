@@ -105,7 +105,6 @@ const Main = () => {
 
         setTimeout(() => {
           setLoading(false);
-
           interestCommunityScheduleGet(array).then((res) => {
             if(res.status === 200) {
               const newData = res.data;
@@ -242,6 +241,7 @@ const Main = () => {
         setScheduleArea(true);
 
         interestCommunityScheduleGet(array).then((res) => {
+          debugger
           console.log(res.data)
           setScheduleArray(res.data);
         }).catch((err) => {

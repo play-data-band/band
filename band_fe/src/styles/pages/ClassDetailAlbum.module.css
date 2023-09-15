@@ -5,6 +5,9 @@
     margin-bottom: 1.5vw;
     flex-wrap: wrap;
     background: #fff;
+
+    height: calc(100vh - 20vh);
+    overflow-y: scroll;
 }
 
 .albumItem {

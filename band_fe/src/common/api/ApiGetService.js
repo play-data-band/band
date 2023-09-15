@@ -20,3 +20,4 @@ export const interestNewCommunityGet = (page, size) => apiClient.get('/api/v1/co
 })
 
 
+

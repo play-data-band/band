@@ -15,6 +15,7 @@ const initialIsLoginState = {
     email : null,
     username : null
   }
+
 }
 
 const loginCheckSlise = createSlice({
