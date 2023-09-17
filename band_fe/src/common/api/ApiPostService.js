@@ -39,7 +39,8 @@ export const communityInsert = (communityId, memberId, memberName, memberRole, m
   memberRole,
   memberImage,
   communityName,
-  communityImage
+  communityImage,
+  communityId
 })
 
 export const userChatMsg = (communityId, memberId, memberName, memberImage, content) => apiClient.post('/api/v1/chattings', {

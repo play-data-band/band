@@ -1,30 +1,54 @@
 import React, {useEffect, useRef, useState} from 'react';
 import classes from "../../styles/blocks/SuggestComunity.module.css";
 import piano from "../../asset/images/piano.jpeg";
+import {useNavigate} from "react-router-dom";
+import {findByCommunitySchedule} from "../../common/api/ApiGetService";
 
 const UserClass = (props) => {
-
+  const nav = useNavigate();
+  const [schedule, setSchedule] = useState([]);
 
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log(props)
-  }, [])
+
+    findByCommunitySchedule(props.data.communityId).then((res) => {
+      setSchedule(res.data);
+      console.log(res.data)
+    }).catch((err) => {
+
+    })
+  }, []);
 
   const backgroundRef = useRef();
 
 
-  const suggestionClickMethod = () => {
+  const suggestionClickMethod = (data) => {
     backgroundRef.current.style.background = 'rgb(229 226 226)';
 
     setTimeout(() => {
       backgroundRef.current.style.background = '#fff';
+      nav(`/classDetail?detail=${data}`);
     }, 100);
+  }
+
+  function formatDateTime(dateTimeString) {
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      weekday: 'long'
+    };
+    const formattedDateTime = new Date(dateTimeString).toLocaleString('ko-KR', options);
+    return formattedDateTime;
   }
 
   return (
     <div style={{marginBottom : '2vw'}}>
-      <div ref={backgroundRef} onClick={suggestionClickMethod} className={classes.suggestionArea}>
+      <div ref={backgroundRef} onClick={() => suggestionClickMethod(props.data.communityId)} className={classes.suggestionArea}>
         <div className={classes.suggestionLeft}>
           <div className={classes.suggestionLeftInner}><img src={props.data.communityImage} /></div>
         </div>
@@ -40,7 +64,10 @@ const UserClass = (props) => {
           </div>
         </div>
       </div>
-      <p className={classes.schedule}>9/10 (일) 오후 5:00 - 음치탈출 클래스</p>
+      {schedule.length != 0 ? schedule.map((item, idx) => (
+        <p className={classes.schedule}>{formatDateTime(item.scheduleTime)} - {item.scheduleName}</p>
+      )) : <p style={{padding : '0 3vw', color : '#8d8d8d', fontSize : '3vw'}}>등록된 일정 없음</p>}
+
     </div>
   );
 };

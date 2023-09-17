@@ -3,7 +3,6 @@ import classes from "../../styles/blocks/SuggestComunity.module.css";
 import piano from "../../asset/images/piano.jpeg";
 
 const SuggestSchedule = (props) => {
-
   const backgroundRef = useRef();
 
   const suggestionClickMethod = () => {

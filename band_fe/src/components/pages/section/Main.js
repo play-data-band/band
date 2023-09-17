@@ -353,6 +353,14 @@ const Main = () => {
     }, 500);
   }
 
+  const scheduleLink = (data) => {
+    setLoading(true);
+
+    setTimeout(() => {
+      nav(`/classDetail?detail=${data}`);
+    }, 500);
+  }
+
    return (
     <>
       <PC>
@@ -397,7 +405,7 @@ const Main = () => {
           </div>}
           {scheduleArea && <div className={classes.suggestionWrap}>
             {scheduleArray.map((item, idx) => (
-              <SuggestSchedule data={item} key={idx} />
+              <SuggestSchedule onClick={() => {scheduleLink(item.communityId)}} data={item} key={idx} />
             ))}
           </div>}
 

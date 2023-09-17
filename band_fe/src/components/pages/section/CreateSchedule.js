@@ -46,7 +46,8 @@ const CreateSchedule = () => {
 
     setTimeout(() => {
       setLoading(false);
-      createSchedule(communityId, userLocation, new Date(userCateSub).toISOString(), userDesc, userImg, userImg2, communityInterest, userInfo.profileImgPath, userInfo.username).then((res) => {
+
+      createSchedule(communityId, userLocation, convertToKoreanTime(userCateSub), userDesc, userImg, userImg2, communityInterest, userInfo.profileImgPath, userInfo.username).then((res) => {
         if (res.status === 200) {
           setIsMsgPopupOpen({show: true, msg: '일정이 생성 되었습니다.', gb: '1'});
         }
@@ -54,6 +55,12 @@ const CreateSchedule = () => {
         console.log(err);
       })
     }, 500);
+  }
+
+  function convertToKoreanTime(dateTimeString) {
+    const koreanTime = new Date(dateTimeString);
+    koreanTime.setHours(koreanTime.getHours() + 9); // 9시간 추가
+    return koreanTime.toISOString();
   }
 
   const closeMsgPopup = (gb) => {

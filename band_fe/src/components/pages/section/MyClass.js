@@ -29,69 +29,8 @@ const MyClass = () => {
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [mainFirstReq, setMainFirstReq] = useState(false);
-
-
   const userInfo = useSelector(state => state.loginCheck.loginInfo);
   const nav = useNavigate();
-
-  const [dummy, setDummy] = useState([
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-  ]);
 
   useEffect(() => {
 
