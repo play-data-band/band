@@ -26,7 +26,7 @@ const FixedMenuBar = (props) => {
           </li>
           <li onClick={() => {linkMethod('/myPage')}}>
             <div className={classes.myImg}>
-              <img src={userInfo.profileImgPath} />
+              <img className={classes.img3} src={userInfo.profileImgPath} />
             </div>
             <p>내정보</p>
           </li>

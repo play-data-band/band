@@ -30,7 +30,7 @@ export const userRecommandCommunity = (interestArray, page, size) => apiClient.p
   }
 });
 
-export const userInterestSave = (interest, userId) => apiClient.post(`/api/v1/interest/${userId}`, {
+export const userInterestSave = (interest, userId) => apiClient.post(`/api/v1/bandMember/${userId}/interest`, {
   interest
 })
 export const communityInsert = (communityId, memberId, memberName, memberRole, memberImage, communityName, communityImage) => apiClient.post(`/api/v1/communitymember/${communityId}`, {
@@ -76,3 +76,9 @@ export const albumInsert = (communityId, memberId, memberName, memberImgPath, im
   communityId, memberId, memberName, memberImgPath, imgPath, likeCount
 });
 
+
+export const likeAddFunc = (memberId, communityId, communityName, communityImgPath) => apiClient.post(`/api/v1/bandMember/reserve/${memberId}`, {
+  communityId, communityName, communityImgPath
+});
+
+export const likeRemoveFunc = (memberId, communityId) => apiClient.delete(`/api/v1/bandMember/reserve/${memberId}/${communityId}`);

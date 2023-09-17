@@ -8,79 +8,33 @@ import set from "../../../asset/images/setblack.png";
 import ClassCarousel from "../../blocks/ClassCarousel";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {findByMyReserve} from "../../../common/api/ApiGetService";
+import MyClassCarousel from "../../blocks/MyClassCarousel";
 
 const MyPage = () => {
   const userInfo = useSelector(state => state.loginCheck.loginInfo);
   const nav = useNavigate();
+  const [myReserveList, setMyReserveList] = useState([]);
+
 
   useEffect(() => {
 
     if (!userInfo.isLogin) {
       nav('/');
       return;
-    }
+    };
+
+    findByMyReserve(userInfo.userSeq).then((res) => {
+      if (res.status === 200) {
+        setMyReserveList(res.data);
+        console.log(res.data)
+      }
+    }).catch((err) => {
+
+    })
 
   }, []);
 
-
-  const [dummy, setDummy] = useState([
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-    {
-      title : '친목 피아노 모임',
-      desc : '혼자 연습하는게 재미 없으시죠 ?',
-      location: '수원시',
-      member : 42,
-      tag : '음악/악기'
-    },
-  ]);
 
   return (
     <div className={classes.fixedSpace}>
@@ -112,11 +66,9 @@ const MyPage = () => {
 
         <div className={myClasses.mySubj}>
           <div className={myClasses.mySubjWrap}>
-            <span className={myClasses.mySubjWrapItem}>헬스/크로스핏</span>
-            <span className={myClasses.mySubjWrapItem}>헬스/크로스핏</span>
-            <span className={myClasses.mySubjWrapItem}>헬스/크로스핏</span>
-            <span className={myClasses.mySubjWrapItem}>헬스/크로스핏</span>
-            <span className={myClasses.mySubjWrapItem}>헬스/크로스핏</span>
+            {userInfo.interest.map((item, idx) => (
+              <span className={myClasses.mySubjWrapItem}>{item.interest}</span>
+            ))}
           </div>
         </div>
 
@@ -125,7 +77,7 @@ const MyPage = () => {
         </div>
 
         <div className={myClasses.slideWrap}>
-          {/*<ClassCarousel data={dummy} />*/}
+          <MyClassCarousel data={myReserveList} />
         </div>
 
         <div className={myClasses.myPageClassWrap}>

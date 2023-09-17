@@ -18,14 +18,20 @@ import {
   findByCommunityBoard,
   findByCommunityById,
   findByCommunityCount,
-  findByCommunitySchedule,
+  findByCommunitySchedule, findByMyReserve,
   scheduleMemberCondition
 } from "../../../common/api/ApiGetService";
 import {useDispatch, useSelector} from "react-redux";
 import PopupDom from "../../blocks/PopupDom";
 import MsgPopup from "../../blocks/MsgPopup";
 import ConfirmPopup from "../../blocks/ConfirmPopup";
-import {communityInsert, communityMemberDelete, scheduleInsert} from "../../../common/api/ApiPostService";
+import {
+  communityInsert,
+  communityMemberDelete,
+  likeAddFunc,
+  likeRemoveFunc,
+  scheduleInsert
+} from "../../../common/api/ApiPostService";
 import Loading from "../../atoms/Loading";
 import {loginCheckAction} from "../../../ducks/loginCheck";
 
@@ -63,12 +69,29 @@ const ClassDetail = () => {
     borderAction(urlParams.get('pageIdx'));
 
 
-    setPageIdx();
-
     // 커뮤니티 상세정보 GET..
     findByCommunityById(detailValue).then((res) => {
       if (res.status === 200) {
-        setCommunityInfo(res.data);
+
+        const data = res.data;
+
+
+        findByMyReserve(userInfo.userSeq).then((res) => {
+          if (res.status === 200) {
+            res.data.forEach((item, idx) => {
+              if (item.communityId == urlParams.get('detail')) {
+                data.reserve = true;
+                setHeartFill(true);
+
+              }
+            })
+          }
+        }).catch((err) => {
+          console.log(err);
+        })
+
+        setCommunityInfo(data);
+
       }
     }).catch((err) => {
       console.log(err);
@@ -201,7 +224,39 @@ const ClassDetail = () => {
   ];
 
   const likeHandler = () => {
-    setHeartFill(!heartFill);
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+
+      likeAddFunc(userInfo.userSeq, communityInfo.id, communityInfo.description, communityInfo.profileImage).then((res) => {
+        if (res.status === 200) {
+          setIsMsgPopupOpen({show: true, msg: '내 찜 리스트에 추가 되었습니다.'});
+          setHeartFill(true);
+        }
+      }).catch((err) => {
+
+      })
+
+    }, 500);
+  }
+
+  const likeCancelHandler = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+
+      likeRemoveFunc(userInfo.userSeq, communitiyId).then((res) => {
+        if (res.status === 200) {
+          setIsMsgPopupOpen({show: true, msg: '내 찜 리스트 에서 삭제 되었습니다.'});
+          setHeartFill(false);
+        }
+      }).catch((err) => {
+
+      })
+
+    }, 500);
   }
 
   const backHandler = () => {
@@ -317,8 +372,9 @@ const ClassDetail = () => {
             </div>
             <h2>{communityInfo.description}</h2>
             <div className={myClasses.iconWrap}>
-              <div className={myClasses.heart} onClick={likeHandler}>
-                <img src={heartFill ? heart : heartFillImg} />
+              <div className={myClasses.heart}>
+                {heartFill && <img onClick={likeCancelHandler} src={heartFillImg} />}
+                {!heartFill && <img onClick={likeHandler} src={heart} />}
               </div>
               <div className={myClasses.share}>
                 <img src={share} />

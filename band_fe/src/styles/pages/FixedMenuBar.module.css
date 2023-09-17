@@ -38,6 +38,12 @@
     height: 5vw;
 }
 
+.menuArea li .img3 {
+    height: 5vw;
+    width: 100%;
+    border-radius: 50%;
+}
+
 .myImg {
     width: 5vw;
     height: 5vw;
