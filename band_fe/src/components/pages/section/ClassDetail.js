@@ -13,12 +13,18 @@ import ClassDetailMain from "../Layout/ClassDetailMain";
 import ClassDetailBoard from "../Layout/ClassDetailBoard";
 import ClassDetailAlbum from "../Layout/ClassDetailAlbum";
 import ClassDetailChat from "../Layout/ClassDetailChat";
-import {findByCommunityById, findByCommunityCount} from "../../../common/api/ApiGetService";
+import {
+  findByCommunityBoard,
+  findByCommunityById,
+  findByCommunityCount,
+  findByCommunitySchedule,
+  scheduleMemberCondition
+} from "../../../common/api/ApiGetService";
 import {useSelector} from "react-redux";
 import PopupDom from "../../blocks/PopupDom";
 import MsgPopup from "../../blocks/MsgPopup";
 import ConfirmPopup from "../../blocks/ConfirmPopup";
-import {communityInsert, communityMemberDelete} from "../../../common/api/ApiPostService";
+import {communityInsert, communityMemberDelete, scheduleInsert} from "../../../common/api/ApiPostService";
 import Loading from "../../atoms/Loading";
 
 const ClassDetail = () => {
@@ -28,10 +34,13 @@ const ClassDetail = () => {
   const [communityInfo, setCommunityInfo] = useState({});
   const [communityCount, setCommunityCount] = useState('');
   const [communitiyId, setCommunitiyId] = useState(0);
+  const [pageIdx, setPageIdx] = useState(0);
   const [isMsgPopupOpen, setIsMsgPopupOpen] = useState({show : false, msg: ''});
-  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState({show : false, msg: '', gb : ''});
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState({show : false, msg: '', gb : '', data : ''});
   const userInfo = useSelector(state => state.loginCheck.loginInfo);
   const [isCommunityMember, setIsCommunityMember] = useState(false);
+  const [scheduleInfo, setScheduleInfo] = useState([]);
+  const [communityBoards, setCommunityBoards] = useState([]);
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
 
@@ -46,6 +55,12 @@ const ClassDetail = () => {
 
     setCommunitiyId(urlParams.get('detail'));
 
+
+    borderAction(urlParams.get('pageIdx'));
+
+
+    setPageIdx();
+
     // 커뮤니티 상세정보 GET..
     findByCommunityById(detailValue).then((res) => {
       if (res.status === 200) {
@@ -56,8 +71,7 @@ const ClassDetail = () => {
     });
 
     findByCommunityCountHandler(detailValue);
-
-
+    findByCommunityScheduleHandler(detailValue);
 
   }, []);
 
@@ -86,15 +100,63 @@ const ClassDetail = () => {
     })
   }
 
+  const findByCommunityScheduleHandler = (defaultId) => {
+    findByCommunitySchedule(defaultId).then((res) => {
+
+      const data = res.data;
+
+      data.forEach((item, idx) => {
+
+        scheduleMemberCondition(item.id, userInfo.userSeq).then((res) => {
+           if(res.data) {
+             data[idx].useYn = true;
+           } else {
+             data[idx].useYn = false;
+           }
+        }).catch((err) => {
+
+        })
+      })
+
+      setScheduleInfo(data);
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
+  const findByCommunityBoardService = (communityId) => {
+
+      findByCommunityBoard(communityId).then((res) => {
+          if(res.status === 200) {
+            setCommunityBoards(res.data.content);
+          }
+      }).catch((err) => {
+
+      })
+  }
+
   const borderAction = (idx) => {
 
+
+    switch (idx) {
+      case 0 :
+        border.current.style.left = '0%';
+        setActiveSlide(idx);
+      break;
+
+      case 1 :
+        findByCommunityBoardService(communitiyId);
+      break;
+
+
+    }
+
     if (idx === 0) {
-      border.current.style.left = '0%';
-      setActiveSlide(idx);
-      return ;
+
     }
 
     border.current.style.left = `${idx * 25}%`;
+
 
     // 높이를 공유하기 때문에 다른 el 의 높이를 죽여주자..
 
@@ -106,11 +168,11 @@ const ClassDetail = () => {
 
   const sections = [
     {
-      el : <ClassDetailMain setIsConfirmPopupOpen={setIsConfirmPopupOpen} isCommunityMember={isCommunityMember} communitiyId={communitiyId} communityInfo={communityInfo} communityCount={communityCount} />,
+      el : <ClassDetailMain scheduleInfo={scheduleInfo} setIsConfirmPopupOpen={setIsConfirmPopupOpen} isCommunityMember={isCommunityMember} communitiyId={communitiyId} communityInfo={communityInfo} communityCount={communityCount} />,
       //height: 'auto'
     },
     {
-      el : <ClassDetailBoard />,
+      el : <ClassDetailBoard communitiyId={communitiyId} communityBoards={communityBoards} />,
       //height: '100%'
     },
     {
@@ -118,7 +180,7 @@ const ClassDetail = () => {
       //height: '100%'
     },
     {
-      el : <ClassDetailChat />,
+      el : <ClassDetailChat communitiyId={communitiyId} />,
       //height: '100%'
     }
   ];
@@ -128,7 +190,7 @@ const ClassDetail = () => {
   }
 
   const backHandler = () => {
-    nav(-1);
+    nav('/main');
   }
 
   const closeMsgPopup = () => {
@@ -136,7 +198,7 @@ const ClassDetail = () => {
   }
 
   const closeConfirmPopup = () => {
-    setIsConfirmPopupOpen({show: false, msg: ''});
+    setIsConfirmPopupOpen({show: false, msg: '', gb : '', data : ''});
   }
 
   const confirmHandler = () => {
@@ -150,9 +212,10 @@ const ClassDetail = () => {
 
           findByCommunityCountHandler(communitiyId);
 
-          setIsConfirmPopupOpen({ show: false, msg: '', gb : '' });
+          setIsConfirmPopupOpen({ show: false, msg: '', gb : '' , data : ''});
         }).catch((err) => {
           console.log(err);
+          setLoading(false);
         })
 
       }, 500);
@@ -167,8 +230,30 @@ const ClassDetail = () => {
           setLoading(false);
           findByCommunityCountHandler(communitiyId);
 
-          setIsConfirmPopupOpen({ show: false, msg: '', gb : '' });
+          setIsConfirmPopupOpen({ show: false, msg: '', gb : '', data : '' });
         }).catch((err) => {
+          console.log(err);
+        })
+
+      }, 500);
+    }
+
+    if (isConfirmPopupOpen.gb === 'scheduleInsert') {
+      setTimeout(() => {
+
+        scheduleInsert(userInfo.userSeq, isConfirmPopupOpen.data, 'Y', communitiyId).then((res) => {
+
+          if (res.data.status === "success") {
+            setLoading(false);
+            setIsConfirmPopupOpen({ show: false, msg: '', gb : '', data : '' });
+            setIsMsgPopupOpen({show: true, msg: res.data.data});
+
+            findByCommunityScheduleHandler(communitiyId);
+          }
+        }).catch((err) => {
+          setLoading(false);
+          setIsConfirmPopupOpen({ show: false, msg: '', gb : '', data : '' });
+          setIsMsgPopupOpen({show: true, msg: err.response.data.data.message});
           console.log(err);
         })
 

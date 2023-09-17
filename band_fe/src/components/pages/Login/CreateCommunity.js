@@ -12,25 +12,22 @@ import {passCheck} from "../../../common/Reg";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
+import CategorySelect from "../../blocks/CategorySelect";
+import {categoryMenu} from "../../../common/Menus";
+import {createCommunity} from "../../../common/api/ApiPostService";
 
-const TeacherSignup = () => {
-  const [userPass, setUserPass] = useState('');
-  const [userMbti, setUserMbti] = useState('');
+const CreateCommunity = () => {
   const [userFile, setUserFile] = useState('');
+  const [userLocation, setUserLocation] = useState('');
+  const [userCateSub, setUserCateSub] = useState('');
+  const [userDesc, setUserDesc] = useState('');
+  const [userImg, setUserImg] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isMsgPopupOpen, setIsMsgPopupOpen] = useState({show : false, msg: ''});
+  const [category, setCategory] = useState('');
+  const [isMsgPopupOpen, setIsMsgPopupOpen] = useState({show : false, msg: '', gb : 0});
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState({show : false, msg: ''});
   const nav = useNavigate();
-  const teacherLoginInfo = useSelector(state => state.loginCheck.teacherLoginInfo);
-
-
-
-  const passHandler = (e) => {
-    setUserPass(e.target.value);
-  }
-  const mbtiHandler = (e) => {
-    setUserMbti(e.target.value);
-  }
+  const userInfo = useSelector(state => state.loginCheck.loginInfo);
 
   const handleImageUpload = (e) => {
     // 선택한 파일
@@ -41,47 +38,27 @@ const TeacherSignup = () => {
   };
 
   const signupHandler = () => {
+    setLoading(true);
 
-    if (!passCheck(userPass)) {
-      setIsMsgPopupOpen({show: true, msg: '비밀번호는 대,소문자 특수문자 포함 8글자 이상으로 입력해 주세요.'});
-      return ;
-    }
-
-    if(userMbti === '') {
-      setIsMsgPopupOpen({show: true, msg: 'Mbti를 입력해 주세요.'});
-      return ;
-    }
-
-    // if(userFile === '') {
-    //   setIsMsgPopupOpen({show: true, msg: '프로필이미지를 등록해 주세요.'});
-    //   return ;
-    // }
-
-    axios.post('http://localhost:8000/api/v1/user', {
-      email : teacherLoginInfo.email,
-      password : userPass,
-      name : teacherLoginInfo.username,
-      mbti : userMbti
-    }).then((res) => {
-      setLoading(true);
-
-      setTimeout(() => {
+    setTimeout(() => {
+      createCommunity(userInfo.userSeq, userInfo.username, userLocation, userCateSub, category, userDesc, userImg).then((res) => {
+        setIsMsgPopupOpen({show: true, msg: '모임이 등록 되었습니다.', gb : '1'});
         setLoading(false);
-        // setIsMsgPopupOpen({show: true, msg: '아이디를 이메일형식으로 입력해주세요.'});
-        nav('/main');
-      }, 700);
-
-    }).catch((err) => {
-
-    })
-
-
-
-
+      }).catch((err) => {
+        setLoading(false);
+        console.log(err);
+      })
+    }, 500);
 
   }
-  const closeMsgPopup = () => {
-    setIsMsgPopupOpen({show: false, msg: ''});
+
+  const closeMsgPopup = (gb) => {
+
+    if (isMsgPopupOpen.gb === '1') {
+      nav('/main');
+    }
+
+    setIsMsgPopupOpen({show: false, msg: '', gb: '0'});
   }
 
   const closeConfirmPopup = () => {
@@ -90,6 +67,20 @@ const TeacherSignup = () => {
 
   const confirmHandler = () => {
     alert("asdsad")
+  }
+
+  const locationHandler = (e) => {
+    setUserLocation(e.target.value);
+  }
+
+  const categorySubHandler = (e) => {
+    setUserCateSub(e.target.value);
+  }
+  const descHandler = (e) => {
+    setUserDesc(e.target.value);
+  }
+  const imgHandler = (e) => {
+    setUserImg(e.target.value);
   }
 
 
@@ -105,13 +96,21 @@ const TeacherSignup = () => {
           <img className={classes.signUpPageLogo} src={mainLogo} />
         </div>
 
-        <h2 style={{fontSize : '4vw', textAlign : 'center', fontWeight : '600', marginBottom : '5vw'}}>추가 정보를 저장해 주세요.</h2>
+        <h2 style={{fontSize : '4vw', textAlign : 'center', fontWeight : '600', marginBottom : '5vw'}}>생성할 모임정보를 입력해 주세요.</h2>
 
 
         <div className={classes.inputArea}>
-          <Input onChange={passHandler} placeholder="********" value="비밀번호" type="password" />
-          <Input onChange={mbtiHandler} placeholder="ENFJ" value="Mbti" type="text" />
-          {/*<Input placeholder="" value="프로필 이미지" type="text" />*/}
+          <Input onChange={locationHandler} placeholder="서울" value="소모임 지역" type="text" />
+          <Input onChange={categorySubHandler} placeholder="러닝 모임" value="소모임 목적" type="text" />
+          <Input onChange={descHandler} placeholder="댄스를 좋아하는 모임입니다." value="소모임 내용" type="text" />
+          <Input onChange={imgHandler} placeholder="이미지 URL" value="소모임 이미지" type="text" />
+
+
+          <div className={classes.selectBoxArea}>
+            <p>소모임 카테고리</p>
+            <CategorySelect setCategory={setCategory} menuList={categoryMenu} />
+          </div>
+
           <Input
             placeholder="프로필 이미지"
             value="프로필 이미지"
@@ -120,7 +119,7 @@ const TeacherSignup = () => {
             onChange={(e) => handleImageUpload(e)}
           />
           <div className={classes.findArea}></div>
-          <Button onClick={signupHandler} value="저장" />
+          <Button onClick={signupHandler} value="만들기" />
         </div>
         {loading && <Loading />}
         <div id='popupDom'>
@@ -136,4 +135,4 @@ const TeacherSignup = () => {
   );
 };
 
-export default TeacherSignup;
+export default CreateCommunity;

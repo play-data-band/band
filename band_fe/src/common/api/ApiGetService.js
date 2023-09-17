@@ -20,9 +20,15 @@ export const interestNewCommunityGet = (page, size) => apiClient.get('/api/v1/co
   }
 })
 
-export const findByCommunityById = (communityid) => apiClient.get(`http://192.168.0.229:8000/api/v1/community/${communityid}`);
+export const findByCommunityById = (communityid) => apiClient.get(`/api/v1/community/${communityid}`);
 
-export const findByCommunityCount = (communityid) => apiClient.get(`http://192.168.0.229:8000/api/v1/communitymember/communityid/${communityid}`);
+export const scheduleMemberCondition = (scheduleId, communityid) => apiClient.get(`/api/v1/schedule/scheduleid/${scheduleId}/memberid/${communityid}`);
+
+export const findByCommunityCount = (communityid) => apiClient.get(`/api/v1/communitymember/communityid/${communityid}`);
+
+export const findByCommunitySchedule = (communityid) => apiClient.get(`/api/v1/schedule/communityId/${communityid}`);
+
+export const findByCommunityBoard = (communityid) => apiClient.get(`/api/v1/board/${communityid}`);
 
 
 

@@ -7,7 +7,6 @@ import {useSelector} from "react-redux";
 const ClassDetailChat = (props) => {
 
   const [chatList, setChatList] = useState([]);
-  const [myMemberId, setMyMemberId] = useState(3);
   const [timeData, setTimeData] = useState(false);
   const [msg, setMsg] = useState('');
   const isLogin = useSelector(state => state.loginCheck.loginInfo);
@@ -18,11 +17,12 @@ const ClassDetailChat = (props) => {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.0.229:9090/api/v1/chattings', {
+        const response = await axios.get('http://192.168.0.104:9090/api/v1/chattings', {
           params: {
-            communityId: 1
+            communityId: props.communitiyId
           }
         });
+
         setChatList(response.data);
       } catch (error) {
         console.error(error);
@@ -31,12 +31,12 @@ const ClassDetailChat = (props) => {
 
     fetchData();
 
-    fetchDataInterval = setInterval(() => {
-      setTimeData((prevTimeData) => !prevTimeData);
-    }, 500);
+    // fetchDataInterval = setInterval(() => {
+    //   setTimeData((prevTimeData) => !prevTimeData);
+    // }, 500);
 
     return () => {
-      clearInterval(fetchDataInterval);
+      // clearInterval(fetchDataInterval);
     };
 
   }, [timeData]);
@@ -71,7 +71,7 @@ const ClassDetailChat = (props) => {
 
     console.log(scrollRef.current.scrollTop)
 
-    userChatMsg(1, isLogin.userSeq, isLogin.username, isLogin.profileImgPath, msg)
+    userChatMsg(props.communitiyId, isLogin.userSeq, isLogin.username, isLogin.profileImgPath, msg)
       .then((res) => {
         console.log(res)
       }).catch((err) => {
@@ -92,7 +92,7 @@ const ClassDetailChat = (props) => {
           </div>
           {chatList.map((item, idx) => (
             <div key={idx}>
-              {item.memberId !== myMemberId ? (<div className={classes.chattingItem}>
+              {item.memberId !== isLogin.userSeq ? (<div className={classes.chattingItem}>
                                                 <div className={classes.chattingImg}>
                                                   <div className={classes.img}></div>
                                                 </div>

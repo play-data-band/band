@@ -140,6 +140,7 @@ const MyClass = () => {
 
               if(res.status === 200) {
                 const newData = res.data.content;
+
                 setCommunityList(prevData => [...prevData, ...newData]);
               }
 
@@ -194,13 +195,12 @@ const MyClass = () => {
 
   }
 
-  const goToDetail = () => {
-
+  const goToDetail = (data) => {
     setLoading(true);
 
     setTimeout(() => {
       setLoading(false);
-      nav('/classDetail');
+      nav(`/classDetail?detail=${data}`);
     }, 400);
 
   }
@@ -259,7 +259,7 @@ const MyClass = () => {
 
           <div className={myClasses.suggestionPadding}>
             {communityList.map((item, idx) => (
-              <SuggestComunity key={idx} data={item} key={idx} onClick={goToDetail} />
+              <SuggestComunity key={idx} data={item} key={idx} onClick={() => goToDetail(item.id)} />
             ))}
           </div>
 

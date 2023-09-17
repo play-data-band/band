@@ -16,6 +16,7 @@ import {
 import {useSelector} from "react-redux";
 import {interestCommunityScheduleGet, userRecommandCommunity} from "../../../common/api/ApiPostService";
 import SuggestSchedule from "../../blocks/SuggestSchedule";
+import addBtn from "../../../asset/images/add.png";
 
 const Main = () => {
   const border = useRef();
@@ -36,6 +37,8 @@ const Main = () => {
   const [mainFirstReq, setMainFirstReq] = useState(true);
   const [scheduleArea, setScheduleArea] = useState(false);
   const [scheduleArray, setScheduleArray] = useState([]);
+  const [displayCreateCommunity, setDisplayCreateCommunity] = useState(false);
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -86,6 +89,14 @@ const Main = () => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
+
+    // 스크롤을 내릴 때 요소 나타내기
+    if (scrollTop > 100) {
+      setDisplayCreateCommunity(true);
+    } else {
+      // 스크롤을 가장 위로 올릴 때 요소 숨기기
+      setDisplayCreateCommunity(false);
+    }
 
     // 스크롤이 페이지 하단에 도달
     if (scrollTop + windowHeight + 1 >= documentHeight) {
@@ -331,7 +342,18 @@ const Main = () => {
     })
   }
 
-  return (
+  const createCommunityHadler = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+
+      nav('/createCommunity')
+
+    }, 500);
+  }
+
+   return (
     <>
       <PC>
         <div className={classes.pcWrap} >
@@ -379,6 +401,9 @@ const Main = () => {
             ))}
           </div>}
 
+          <div onClick={createCommunityHadler} style={{opacity : displayCreateCommunity ? 100 : 0}} className={classes.createCommunity}>
+            <img src={addBtn} />
+          </div>
           <FixedMenuBar />
           {loading && <Loading />}
         </div>

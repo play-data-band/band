@@ -33,7 +33,7 @@ export const userRecommandCommunity = (interestArray, page, size) => apiClient.p
 export const userInterestSave = (interest, userId) => apiClient.post(`/api/v1/interest/${userId}`, {
   interest
 })
-export const communityInsert = (communityId, memberId, memberName, memberRole, memberImage, communityName, communityImage) => apiClient.post(`http://192.168.0.229:8000/api/v1/communitymember/${communityId}`, {
+export const communityInsert = (communityId, memberId, memberName, memberRole, memberImage, communityName, communityImage) => apiClient.post(`/api/v1/communitymember/${communityId}`, {
   memberId,
   memberName,
   memberRole,
@@ -42,7 +42,7 @@ export const communityInsert = (communityId, memberId, memberName, memberRole, m
   communityImage
 })
 
-export const userChatMsg = (communityId, memberId, memberName, memberImage, content) => apiClient.post('http://192.168.0.229:9090/api/v1/chattings', {
+export const userChatMsg = (communityId, memberId, memberName, memberImage, content) => apiClient.post('/api/v1/chattings', {
   communityId,
   memberId,
   memberName,
@@ -50,4 +50,28 @@ export const userChatMsg = (communityId, memberId, memberName, memberImage, cont
   content
 })
 
-export const communityMemberDelete = (memberId, communityId) => apiClient.delete(`http://192.168.0.229:8000/api/v1/communitymember/memberid/${memberId}/communityid/${communityId}`);
+export const scheduleInsert = (memberId, scheduleId, useYn, communityId) => apiClient.post('/api/v1/schedule/attendance', {
+  memberId,
+  scheduleId,
+  useYn,
+  communityId
+})
+
+export const boardInsert = (communityId, content, memberId, memberName, memberImage, title) => apiClient.post(`/api/v1/board/${communityId}`, {
+  communityId, content, memberId, memberName, memberImage, title
+})
+
+export const createCommunity = (ownerId, name, location, category, interest, description, profileImage) => apiClient.post('/api/v1/community', {
+  ownerId, name, location, category, interest, description, profileImage
+})
+
+export const createSchedule = (communityId, scheduleName, scheduleTime, meetingPlace, price, maxParticipation, interest, memberImage, memberName) => apiClient.post(`/api/v1/schedule/${communityId}`, {
+  scheduleName, scheduleTime, meetingPlace, price, maxParticipation, interest, memberImage, memberName
+})
+
+export const communityMemberDelete = (memberId, communityId) => apiClient.delete(`/api/v1/communitymember/memberid/${memberId}/communityid/${communityId}`);
+
+export const likeInsert = (boardUUID, boardLike) => apiClient.put(`/api/v1/board/likeCountUpdate/${boardUUID}`, {
+  boardLike
+});
+

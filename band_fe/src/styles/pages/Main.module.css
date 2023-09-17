@@ -205,3 +205,38 @@
     padding-bottom: 60px;
 }
 
+.createCommunity {
+    position: fixed;
+    bottom: 70px;
+    right: 10px;
+    transition: 0.5s;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.createCommunity2 {
+    right: 10px;
+    transition: 0.5s;
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.createCommunity img, .createCommunity2 img {
+    width: 12vw;
+    height: 12vw;
+}
+
+.selectBoxArea {
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 3vw;
+}
+
+.selectBoxArea p {
+    font-size: 14px;
+    color: rgb(20, 22, 23);
+    margin-bottom: 2vw;
+}
