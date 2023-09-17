@@ -82,3 +82,7 @@ export const likeAddFunc = (memberId, communityId, communityName, communityImgPa
 });
 
 export const likeRemoveFunc = (memberId, communityId) => apiClient.delete(`/api/v1/bandMember/reserve/${memberId}/${communityId}`);
+
+export const likeInsertFunc = (target, targetId, memberId) => apiClient.post(`/api/v1/like`, {
+  target, targetId, memberId
+});

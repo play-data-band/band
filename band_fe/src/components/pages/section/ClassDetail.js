@@ -210,7 +210,7 @@ const ClassDetail = () => {
       //height: 'auto'
     },
     {
-      el : <ClassDetailBoard communitiyId={communitiyId} communityBoards={communityBoards} />,
+      el : <ClassDetailBoard findByCommunityBoardService={findByCommunityBoardService} communitiyId={communitiyId} communityBoards={communityBoards} />,
       //height: '100%'
     },
     {
@@ -355,7 +355,6 @@ const ClassDetail = () => {
 
     }
   }
-
   return (
     <div>
       <PC>

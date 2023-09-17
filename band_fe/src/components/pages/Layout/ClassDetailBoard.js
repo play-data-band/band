@@ -6,11 +6,13 @@ import comment from "../../../asset/images/comment.png";
 import addBtn from "../../../asset/images/add.png";
 import {useNavigate} from "react-router-dom";
 import Loading from "../../atoms/Loading";
-import {likeInsert} from "../../../common/api/ApiPostService";
+import {likeInsert, likeInsertFunc} from "../../../common/api/ApiPostService";
+import {useSelector} from "react-redux";
 
 const ClassDetailBoard = (props) => {
   const nav = useNavigate();
   const [loading, setLoading] = useState(false);
+  const userInfo = useSelector(state => state.loginCheck.loginInfo);
 
   const createBoardHandler = () => {
     setLoading(true);
@@ -21,9 +23,13 @@ const ClassDetailBoard = (props) => {
 
   }
 
-  const likeHandler = () => {
-    console.log(props.communityBoards[0].id);
-    // likeInsert()
+  const likeHandler = (data) => {
+
+    likeInsertFunc('board', data.id, userInfo.userSeq).then((res) => {
+      props.findByCommunityBoardService(props.communitiyId);
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 
   return (
@@ -62,7 +68,7 @@ const ClassDetailBoard = (props) => {
 
               <div className={classes.likeArea}>
                 <div className={classes.likeLeft}>
-                  <div onClick={likeHandler} className={classes.like}>
+                  <div onClick={() => {likeHandler(item)}} className={classes.like}>
                     <img src={like} />
                     <p>좋아요</p>
                     <span>{item.likeCount}</span>
