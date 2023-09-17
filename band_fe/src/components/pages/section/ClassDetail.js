@@ -16,9 +16,10 @@ import ClassDetailChat from "../Layout/ClassDetailChat";
 import {
   findByCommunityAlbum,
   findByCommunityBoard,
-  findByCommunityById,
+  findByCommunityById, findByCommunityComments,
   findByCommunityCount,
-  findByCommunitySchedule, findByMyReserve,
+  findByCommunitySchedule,
+  findByMyReserve,
   scheduleMemberCondition
 } from "../../../common/api/ApiGetService";
 import {useDispatch, useSelector} from "react-redux";
@@ -103,7 +104,7 @@ const ClassDetail = () => {
   }, []);
 
   const findByCommunityCountHandler = (defaultId) => {
-
+    let commentArr = [];
     // 특정 커뮤니티의 가입 리스트..
     findByCommunityCount(defaultId).then((res) => {
 
@@ -151,15 +152,42 @@ const ClassDetail = () => {
     })
   }
 
-  const findByCommunityBoardService = (communityId) => {
+  const findByCommunityBoardService = async (communityId) => {
+      const data = await findByCommunityBoard(communityId);
 
-      findByCommunityBoard(communityId).then((res) => {
-          if(res.status === 200) {
-            setCommunityBoards(res.data.content);
+
+      if (data.status === 200) {
+        const assignObj = data.data.content;
+
+        for (const [idx, item] of data.data.content.entries()) {
+          const data2 = await findByCommunityComments(item.id);
+
+          if (data2.status === 200) {
+
+            assignObj[idx].comments = data2.data;
           }
-      }).catch((err) => {
+        }
 
-      })
+        // for(const item of data.data.content) {
+        //   const data2 = await findByCommunityComments(item.id);
+        //
+        //   if (data2.status === 200) {
+        //     arr.push(data2.data);
+        //   }
+        // }
+
+        setCommunityBoards(assignObj);
+      }
+
+      // findByCommunityBoard(communityId).then((res) => {
+      //     if(res.status === 200) {
+      //       setCommunityBoards(res.data.content);
+      //     }
+      //
+      // }).catch((err) => {
+      //
+      // });
+
   }
 
   const findByCommunityAlbumService = (communitiyId) => {

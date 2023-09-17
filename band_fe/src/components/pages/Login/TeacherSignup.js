@@ -11,17 +11,21 @@ import ConfirmPopup from "../../blocks/ConfirmPopup";
 import {passCheck} from "../../../common/Reg";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {signup} from "../../../common/api/ApiPostService";
+import {loginCheckAction} from "../../../ducks/loginCheck";
 
 const TeacherSignup = () => {
   const [userPass, setUserPass] = useState('');
   const [userMbti, setUserMbti] = useState('');
   const [userFile, setUserFile] = useState('');
+  const [imgState, setImgState] = useState('');
   const [loading, setLoading] = useState(false);
   const [isMsgPopupOpen, setIsMsgPopupOpen] = useState({show : false, msg: ''});
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState({show : false, msg: ''});
   const nav = useNavigate();
   const teacherLoginInfo = useSelector(state => state.loginCheck.teacherLoginInfo);
+  const dispatch = useDispatch();
 
 
 
@@ -57,27 +61,49 @@ const TeacherSignup = () => {
     //   return ;
     // }
 
-    axios.post('http://localhost:8000/api/v1/user', {
-      email : teacherLoginInfo.email,
-      password : userPass,
-      name : teacherLoginInfo.username,
-      mbti : userMbti
-    }).then((res) => {
+    signup(teacherLoginInfo.email, userPass, teacherLoginInfo.username, userMbti, imgState).then((res) => {
       setLoading(true);
+
 
       setTimeout(() => {
         setLoading(false);
-        // setIsMsgPopupOpen({show: true, msg: '아이디를 이메일형식으로 입력해주세요.'});
-        nav('/main');
-      }, 700);
 
+        // 회원가입 성공 시..
+        if (res.data.status == "success") {
+debugger
+          const loginInfo = {
+            isLogin : false,
+            id : null,
+            username : null,
+            profileImgPath : null,
+            mbti : null,
+            userSeq : res.data.data
+          }
+
+          dispatch(loginCheckAction.loginInfoSet(loginInfo));
+
+          nav('/category');
+        }
+
+
+        //nav('/main');
+      }, 500);
     }).catch((err) => {
 
     })
 
 
-
-
+    // axios.post('http://localhost:8000/api/v1/user', {
+    //   email : teacherLoginInfo.email,
+    //   password : userPass,
+    //   name : teacherLoginInfo.username,
+    //   mbti : userMbti
+    // }).then((res) => {
+    //
+    //
+    // }).catch((err) => {
+    //
+    // })
 
   }
   const closeMsgPopup = () => {
@@ -92,6 +118,9 @@ const TeacherSignup = () => {
     alert("asdsad")
   }
 
+  const imgHandler = (e) => {
+    setImgState(e.target.value);
+  }
 
   return (
     <div>
@@ -111,7 +140,7 @@ const TeacherSignup = () => {
         <div className={classes.inputArea}>
           <Input onChange={passHandler} placeholder="********" value="비밀번호" type="password" />
           <Input onChange={mbtiHandler} placeholder="ENFJ" value="Mbti" type="text" />
-          {/*<Input placeholder="" value="프로필 이미지" type="text" />*/}
+          <Input onChange={imgHandler} placeholder="프로필 이미지 URL" value="프로필 이미지 URL" type="text" />
           <Input
             placeholder="프로필 이미지"
             value="프로필 이미지"

@@ -174,7 +174,7 @@ const ClassDetailMain = (props) => {
                     </div>
                   </div>
                 </div>
-              )) : <p>가입된 멤버가 없습니다.`</p>}
+              )) : <p>가입된 멤버가 없습니다.</p>}
 
 
             </div>

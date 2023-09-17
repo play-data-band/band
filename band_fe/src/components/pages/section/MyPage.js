@@ -27,7 +27,6 @@ const MyPage = () => {
     findByMyReserve(userInfo.userSeq).then((res) => {
       if (res.status === 200) {
         setMyReserveList(res.data);
-        console.log(res.data)
       }
     }).catch((err) => {
 
@@ -67,7 +66,7 @@ const MyPage = () => {
         <div className={myClasses.mySubj}>
           <div className={myClasses.mySubjWrap}>
             {userInfo.interest.map((item, idx) => (
-              <span className={myClasses.mySubjWrapItem}>{item.interest}</span>
+              <span key={idx} className={myClasses.mySubjWrapItem}>{item.interest}</span>
             ))}
           </div>
         </div>

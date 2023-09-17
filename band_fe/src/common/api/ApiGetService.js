@@ -34,6 +34,8 @@ export const findByCommunityAlbum = (communityid) => apiClient.get(`/api/v1/albu
 
 export const findByMyCommunity = (memberId) => apiClient.get(`/api/v1/communitymember/memberid/${memberId}`);
 export const findByMyReserve = (memberId) => apiClient.get(`/api/v1/bandMember/reserve/${memberId}`);
+export const findByCommunityComments = (targetId) => apiClient.get(`/api/v1/comment/${targetId}`);
+export const findByTeacherLoginIngo = (userEmail) => apiClient.get(`/api/v1/user/teacherAccountInfo/${userEmail}`);
 
 
 

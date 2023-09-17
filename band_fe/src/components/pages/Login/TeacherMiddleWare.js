@@ -9,7 +9,7 @@ import PopupDom from "../../blocks/PopupDom";
 import MsgPopup from "../../blocks/MsgPopup";
 import ConfirmPopup from "../../blocks/ConfirmPopup";
 import {emailCheck, passCheck} from "../../../common/Reg";
-import {myTokenInfo} from "../../../common/api/ApiGetService";
+import {findByTeacherLoginIngo, myTokenInfo} from "../../../common/api/ApiGetService";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {teacherLogin} from "../../../common/api/ApiPostService";
@@ -39,7 +39,34 @@ const TeacherMiddleWare = () => {
 
           // 회원 존재..
           if (res.data.status === "CONFLICT") {
-            nav('/main');
+
+            const loginInfo = {
+              isLogin : true,
+              id : data.email,
+              username : data.username,
+              profileImgPath : null,
+              mbti : null,
+              userSeq : null,
+              interest : []
+            }
+
+
+            findByTeacherLoginIngo(data.email).then((res) => {
+
+              loginInfo.token = res.data.token;
+              loginInfo.userSeq = res.data.userId;
+              loginInfo.profileImgPath = res.data.profileImgPath;
+              loginInfo.mbti = res.data.mbti;
+              loginInfo.interest = res.data.interests;
+              loginInfo.username = res.data.username;
+
+              dispatch(loginCheckAction.loginInfoSet(loginInfo));
+
+              nav('/main');
+            }).catch((err) => {
+
+            });
+
             return ;
           }
 

@@ -86,3 +86,7 @@ export const likeRemoveFunc = (memberId, communityId) => apiClient.delete(`/api/
 export const likeInsertFunc = (target, targetId, memberId) => apiClient.post(`/api/v1/like`, {
   target, targetId, memberId
 });
+
+export const writeCommentFunc = (content, targetId, memberId, memberImage, memberName) => apiClient.post(`/api/v1/comment`, {
+  content, targetId, memberId, memberImage, memberName
+});
