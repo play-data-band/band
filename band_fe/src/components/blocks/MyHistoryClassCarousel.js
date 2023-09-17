@@ -13,8 +13,10 @@ import classes from "../../styles/blocks/Carousel.module.css";
 import piano from "../../asset/images/piano.jpeg";
 import {useNavigate} from "react-router-dom";
 
-export default function MyClassCarousel(props) {
+export default function MyHistoryClassCarousel(props) {
   const nav = useNavigate();
+
+
 
   const goToDetail = (data) => {
     nav(`/classDetail?detail=${data}`);
@@ -32,7 +34,7 @@ export default function MyClassCarousel(props) {
         modules={[FreeMode, Pagination]}
         className="mySwiper"
       >
-        {props.data.length != 0 ? props.data.map((item, idx) => (
+        {JSON.parse(localStorage.getItem('storedData')).length != 0 ? JSON.parse(localStorage.getItem('storedData')).map((item, idx) => (
           <SwiperSlide key={idx}>
             <div onClick={() => {goToDetail(item.communityId)}} className={classes.slideWrap}>
               <div className={classes.topSection}>
@@ -43,7 +45,7 @@ export default function MyClassCarousel(props) {
               </div>
             </div>
           </SwiperSlide>
-        )) : <p>찜 목록이 없습니다.</p>}
+        )) : <p>최근 본 모임이 없습니다.</p>}
       </Swiper>
     </>
   );

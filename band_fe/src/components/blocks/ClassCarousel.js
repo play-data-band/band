@@ -18,6 +18,7 @@ export default function ClassCarousel(props) {
   const goToDetail = (data) => {
     nav(`/classDetail?detail=${data}`);
   }
+  debugger
   return (
     <>
       <Swiper

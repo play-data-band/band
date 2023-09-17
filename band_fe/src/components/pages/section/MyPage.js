@@ -10,11 +10,13 @@ import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {findByMyReserve} from "../../../common/api/ApiGetService";
 import MyClassCarousel from "../../blocks/MyClassCarousel";
+import MyHistoryClassCarousel from "../../blocks/MyHistoryClassCarousel";
 
 const MyPage = () => {
   const userInfo = useSelector(state => state.loginCheck.loginInfo);
   const nav = useNavigate();
   const [myReserveList, setMyReserveList] = useState([]);
+  const [myCommunityHistory, setMyCommunityHistory] = useState([]);
 
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const MyPage = () => {
       }
     }).catch((err) => {
 
-    })
+    });
 
   }, []);
 
@@ -84,7 +86,7 @@ const MyPage = () => {
         </div>
 
         <div className={myClasses.slideWrap}>
-          {/*<ClassCarousel data={dummy} />*/}
+          <MyHistoryClassCarousel />
         </div>
 
         {/* bottom={showFixedMenuBar ? '0' : '-20vw'} */}

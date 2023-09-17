@@ -17,6 +17,7 @@ import {useSelector} from "react-redux";
 import {interestCommunityScheduleGet, userRecommandCommunity} from "../../../common/api/ApiPostService";
 import SuggestSchedule from "../../blocks/SuggestSchedule";
 import addBtn from "../../../asset/images/add.png";
+import {saveToLocalStorage} from "../../../common/CommonFunc";
 
 const Main = () => {
   const border = useRef();
@@ -289,6 +290,15 @@ const Main = () => {
 
   const goToDetail = (data) => {
     setLoading(true);
+
+    const storageData = {
+      communityName : data.description,
+      communityImgPath : data.profileImage,
+      communityId : data.id
+    }
+
+    // localstorage 저장..
+    saveToLocalStorage(storageData);
 
     setTimeout(() => {
       setLoading(false);
