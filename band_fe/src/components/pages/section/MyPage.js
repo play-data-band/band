@@ -125,7 +125,7 @@ const MyPage = () => {
         </div>
 
         <div className={myClasses.slideWrap}>
-          <ClassCarousel data={dummy} />
+          {/*<ClassCarousel data={dummy} />*/}
         </div>
 
         <div className={myClasses.myPageClassWrap}>
@@ -133,7 +133,7 @@ const MyPage = () => {
         </div>
 
         <div className={myClasses.slideWrap}>
-          <ClassCarousel data={dummy} />
+          {/*<ClassCarousel data={dummy} />*/}
         </div>
 
         {/* bottom={showFixedMenuBar ? '0' : '-20vw'} */}

@@ -50,6 +50,7 @@ const Login = () => {
 
   const loginSubmitHandler = () => {
 
+
     if (!emailCheck(userEmail)) {
       setIsMsgPopupOpen({show: true, msg: '아이디를 이메일형식으로 입력해 주세요.'});
       return ;
@@ -66,8 +67,8 @@ const Login = () => {
       setLoading(false);
 
       login(userEmail, userPass).then((res) => {
-
         // 로그인 성공
+
         if (res.isLogin) {
           // redux ( localStorage ) 저장..
           dispatch(loginCheckAction.loginInfoSet(res));

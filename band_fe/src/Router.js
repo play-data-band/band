@@ -8,6 +8,10 @@ import MyPage from "./components/pages/section/MyPage";
 import ClassDetail from "./components/pages/section/ClassDetail";
 import TeacherSignup from "./components/pages/Login/TeacherSignup";
 import TeacherMiddleWare from "./components/pages/Login/TeacherMiddleWare";
+import CreateCommunity from "./components/pages/section/CreateCommunity";
+import CreateSchedule from "./components/pages/section/CreateSchedule";
+import CreateBoard from "./components/pages/section/CreateBoard";
+import CreateAlbum from "./components/pages/section/CreateAlbum";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +50,23 @@ const router = createBrowserRouter([
     path : '/authSignup',
     element : <TeacherSignup />,
   },
+  {
+    path : '/createCommunity',
+    element : <CreateCommunity />,
+  },
+  {
+    path : '/createSchedule',
+    element : <CreateSchedule />,
+  },
+  {
+    path : '/createBoard',
+    element : <CreateBoard />,
+  },
+  {
+    path : '/createAlbum',
+    element : <CreateAlbum />,
+  },
+
 ]);
 
 export default router;

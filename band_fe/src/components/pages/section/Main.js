@@ -9,8 +9,14 @@ import SuggestComunity from "../../blocks/SuggestComunity";
 import FixedMenuBar from "../Layout/FixedMenuBar";
 import {useNavigate} from "react-router-dom";
 import Loading from "../../atoms/Loading";
-import {myTokenInfo} from "../../../common/api/ApiGetService";
+import {
+  interestCommunityGet,
+  interestNewCommunityGet, test222
+} from "../../../common/api/ApiGetService";
 import {useSelector} from "react-redux";
+import {interestCommunityScheduleGet, userRecommandCommunity} from "../../../common/api/ApiPostService";
+import SuggestSchedule from "../../blocks/SuggestSchedule";
+import addBtn from "../../../asset/images/add.png";
 
 const Main = () => {
   const border = useRef();
@@ -21,44 +27,259 @@ const Main = () => {
   const [showFixedMenuBar, setShowFixedMenuBar] = useState(false);
   const nav = useNavigate();
   const [loading, setLoading] = useState(false);
-  const isLogin = useSelector(state => state.loginCheck.loginInfo.isLogin);
+  const userInfo = useSelector(state => state.loginCheck.loginInfo);
+  const [communityList, setCommunityList] = useState([]);
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+  const [categorySelect, setCategorySelect] = useState(false);
+  const [newCategorySelect, setNewCategorySelect] = useState(false);
+  const [selectMenuName, setSelectMenuName] = useState('');
+  const [mainFirstReq, setMainFirstReq] = useState(true);
+  const [scheduleArea, setScheduleArea] = useState(false);
+  const [scheduleArray, setScheduleArray] = useState([]);
+  const [displayCreateCommunity, setDisplayCreateCommunity] = useState(false);
+
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
-    if (!isLogin) {
+  useEffect(() => {
+    // 로그인 아니면 튕굼..
+    if (!userInfo.isLogin) {
       nav('/');
       return;
     }
 
-    window.scrollTo(0, 0);
-    const handleScroll = () => {
-      // 여기에 스크롤 이벤트 핸들링 로직을 추가
-      if (window.scrollY > 0) {
-        // 스크롤이 내려갈 때
-        setShowFixedMenuBar(true);
-      } else {
-        // 스크롤을 가장 위로 올릴 때
-        setShowFixedMenuBar(false);
-      }
-    };
+    // 빈 arr 만들어서..
+    const array = [];
 
-    // 스크롤 이벤트 리스너 추가
+    // arr에 저장..
+    userInfo.interest.forEach((item, idx) => {
+      array.push(item.interest);
+    })
+
+    userRecommandCommunity(array, page, size).then((res) => {
+
+      if (res.status === 200) {
+        if (mainFirstReq) {
+          setCommunityList(res.data.content);
+          setMainFirstReq(false);
+        }
+
+      }
+
+    }).catch((err) => {
+
+    })
+
+
     window.addEventListener('scroll', handleScroll);
 
-    // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
     return () => {
+      // 컴포넌트 언마운트 시 스크롤 이벤트 리스너 제거
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+
+  }, [categorySelect, selectMenuName, scheduleArea]);
+
+  const handleScroll = () => {
+
+    // 스크롤 위치 계산
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // 스크롤을 내릴 때 요소 나타내기
+    if (scrollTop > 100) {
+      setDisplayCreateCommunity(true);
+    } else {
+      // 스크롤을 가장 위로 올릴 때 요소 숨기기
+      setDisplayCreateCommunity(false);
+    }
+
+    // 스크롤이 페이지 하단에 도달
+    if (scrollTop + windowHeight + 1 >= documentHeight) {
+      setPage(page + 1);
+
+      // 일정 인피니티 스크롤
+      if (scheduleArea) {
+        setLoading(true);
+
+        // 빈 arr 만들어서..
+        const array = [];
+
+        // arr에 저장..
+        userInfo.interest.forEach((item, idx) => {
+          array.push(item.interest);
+        })
+
+        setTimeout(() => {
+          setLoading(false);
+          interestCommunityScheduleGet(array).then((res) => {
+            if(res.status === 200) {
+              const newData = res.data;
+              setScheduleArray(prevData => [...prevData, ...newData]);
+            }
+          }).catch((err) => {
+            console.log(err);
+          })
+
+        }, 500);
+
+        return ;
+      }
+
+      // 카테고리 인피니티 스크롤..
+      if (categorySelect) {
+        setLoading(true);
+
+        setTimeout(() => {
+          interestCommunityGet(selectMenuName, page, 5).then((res) => {
+            setLoading(false);
+
+            if(res.status === 200) {
+              const newData = res.data.content;
+              setCommunityList(prevData => [...prevData, ...newData]);
+            }
+
+          }).catch((err) => {
+
+          })
+        }, 500);
+
+        return ;
+      }
+
+      // 신규모임 인피니티 스크롤
+      if(newCategorySelect) {
+        setLoading(true);
+
+        setTimeout(() => {
+
+          interestNewCommunityGet(selectMenuName, page, size).then((res) => {
+            setLoading(false);
+
+            if(res.status === 200) {
+              const newData = res.data.content;
+              setCommunityList(prevData => [...prevData, ...newData]);
+            }
+
+          }).catch((err) => {
+
+          })
+        }, 500);
+
+        return ;
+      }
+
+
+
+      // 일반 main 에서 인피니티 스크롤..
+      const array = [];
+      userInfo.interest.forEach((item, idx) => {
+        array.push(item.interest);
+      })
+
+      userRecommandCommunity(array, page, 5).then((res) => {
+
+        setLoading(true);
+
+        setTimeout(() => {
+          setLoading(false);
+
+          if (res.status === 200) {
+            const newData = res.data.content;
+            setCommunityList(prevData => [...prevData, ...newData]);
+          }
+
+        }, 500);
+
+      }).catch((err) => {
+
+      })
+    }
+  };
 
   const borderAction = (idx) => {
 
     if (idx === 0) {
+      setScheduleArea(false);
       border.current.style.left = '0%';
+
+      setLoading(true);
+      // 빈 arr 만들어서..
+      const array = [];
+
+      // arr에 저장..
+      userInfo.interest.forEach((item, idx) => {
+        array.push(item.interest);
+      })
+
+      setTimeout(() => {
+        userRecommandCommunity(array, 0, 10).then((res) => {
+          setLoading(false);
+          if (res.status === 200) {
+            setCommunityList(res.data.content);
+            setMainFirstReq(false);
+          }
+
+        }).catch((err) => {
+
+        })
+
+      }, 400);
+
+
       return ;
     }
 
     border.current.style.left = `${idx * 33.3}%`;
+
+    if(idx === 1) {
+      setLoading(true);
+
+      // 빈 arr 만들어서..
+      const array = [];
+
+      // arr에 저장..
+      userInfo.interest.forEach((item, idx) => {
+        array.push(item.interest);
+      })
+
+      setTimeout(() => {
+        setLoading(false);
+        setScheduleArea(true);
+
+        interestCommunityScheduleGet(array).then((res) => {
+          setScheduleArray(res.data);
+        }).catch((err) => {
+          console.log(err);
+        })
+
+      }, 500)
+
+    }
+
+    if (idx === 2) {
+      setScheduleArea(false);
+      setNewCategorySelect(true);
+      setLoading(true);
+
+      interestNewCommunityGet(0, 10).then((res) => {
+
+        setTimeout(() => {
+          setLoading(false);
+          setCommunityList(res.data.content);
+        }, 400);
+
+      }).catch((err) => {
+
+      })
+
+    }
+
+
   }
 
   const categoryMoreShow = () => {
@@ -66,18 +287,81 @@ const Main = () => {
     setCategoryMoreText(false);
   }
 
-  const goToDetail = () => {
-
+  const goToDetail = (data) => {
     setLoading(true);
 
     setTimeout(() => {
       setLoading(false);
-      nav('/classDetail');
+      nav(`/classDetail?detail=${data.id}`);
     }, 400);
 
   }
 
-  return (
+  const categoryClickMethod = (menuName) => {
+    setLoading(true);
+    setCategorySelect(true);
+    setSelectMenuName(menuName);
+
+    setTimeout(() => {
+      interestCommunityGet(menuName).then((res) => {
+
+        if(res.status === 200) {
+
+          setLoading(false);
+          setCommunityList(res.data.content);
+        }
+
+
+      }).catch((err) => {
+
+      })
+
+    }, 500);
+  }
+
+  const mainCategoryGet = () => {
+    const array = [];
+
+    // arr에 저장..
+    userInfo.interest.forEach((item, idx) => {
+      array.push(item.interest);
+    })
+
+    userRecommandCommunity(array, page, size).then((res) => {
+
+      if (res.status === 200) {
+        if (mainFirstReq) {
+          setCommunityList(res.data.content);
+          setMainFirstReq(false);
+        }
+
+      }
+
+    }).catch((err) => {
+
+    })
+  }
+
+  const createCommunityHadler = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+
+      nav('/createCommunity')
+
+    }, 500);
+  }
+
+  const scheduleLink = (data) => {
+    setLoading(true);
+
+    setTimeout(() => {
+      nav(`/classDetail?detail=${data}`);
+    }, 500);
+  }
+
+   return (
     <>
       <PC>
         <div className={classes.pcWrap} >
@@ -104,7 +388,7 @@ const Main = () => {
           </div>
           <div className={classes.categoryArea}>
             {(isCategoryMore ? categoryMenu.slice(0, categoryCount) : categoryMenu.slice(0, categoryMenuLength)).map((item, idx) => (
-              <div key={idx}  className={classes.categoryAreaWrap}>
+              <div key={idx} onClick={() => {categoryClickMethod(item.menuName)}}  className={classes.categoryAreaWrap}>
                 <Category mb='2vw' textWidth='auto' color='#333' width='13vw' height='13vw' imgPath={item.imgPath} value={item.menuName} />
               </div>
             ))}
@@ -114,17 +398,20 @@ const Main = () => {
             <p onClick={categoryMoreShow} className={classes.categoryMoreAreaParam}>{categoryMoreText ? '카테고리 더보기' : '카테고리 접기'}</p>
           </div>
 
-            <div className={classes.suggestionWrap}>
-            <SuggestComunity onClick={goToDetail} />
-            <SuggestComunity onClick={goToDetail} />
-            <SuggestComunity onClick={goToDetail} />
-            <SuggestComunity onClick={goToDetail} />
-            <SuggestComunity onClick={goToDetail} />
-            <SuggestComunity onClick={goToDetail} />
-            <SuggestComunity onClick={goToDetail} />
-          </div>
+          {!scheduleArea && <div className={classes.suggestionWrap}>
+            {communityList.map((item, idx) => (
+              <SuggestComunity data={item} key={idx} onClick={() => goToDetail(item)} />
+            ))}
+          </div>}
+          {scheduleArea && <div className={classes.suggestionWrap}>
+            {scheduleArray.map((item, idx) => (
+              <SuggestSchedule onClick={() => {scheduleLink(item.communityId)}} data={item} key={idx} />
+            ))}
+          </div>}
 
-          {/* bottom={showFixedMenuBar ? '0' : '-20vw'} */}
+          <div onClick={createCommunityHadler} style={{opacity : displayCreateCommunity ? 100 : 0}} className={classes.createCommunity}>
+            <img src={addBtn} />
+          </div>
           <FixedMenuBar />
           {loading && <Loading />}
         </div>

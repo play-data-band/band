@@ -10,17 +10,21 @@ export const login = async (userId, userPwd) => {
     profileImgPath : null,
     mbti : null,
     token : null,
-    userSeq : null
+    userSeq : null,
+    interest : []
   }
 
   try {
     // 로그인과 동시에 userId 와 pwd 를 이용한 Jwt Token 발행 함수..
+
+
     const response = await userLogin(userId, userPwd);
+
+    console.log(response);
 
     if (response.status === 200) {
 
       const jwtToken = 'Bearer ' + response.data.data.token;
-
 
       res.isLogin = true;
       res.id = response.data.data.email;
@@ -29,6 +33,7 @@ export const login = async (userId, userPwd) => {
       res.mbti = response.data.data.mbti;
       res.token = jwtToken;
       res.userSeq = response.data.data.userId;
+      res.interest = response.data.data.interests;
 
       // 토큰 인증 성공시 모든 API에 기본 요청 토큰 설정..
       apiClient.interceptors.request.use((config) => {

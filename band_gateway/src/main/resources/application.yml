@@ -27,6 +27,16 @@ spring:
           predicates:
             - Path=/api/v1/user/**
 
+        - id: BAND-USER-SERVICE
+          uri: "lb://BAND-USER-SERVICE"
+          predicates:
+            - Path=/api/v1/interest/**
+
+        - id: BAND-COMMUNITY-SERVICE
+          uri: "lb://BAND-COMMUNITY-SERVICE"
+          predicates:
+            - Path=/api/v1/community/**
+
 # Config Server Observing Update..
 management:
   endpoints:

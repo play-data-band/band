@@ -7,13 +7,15 @@ const initialIsLoginState = {
       username : null,
       profileImgPath : null,
       mbti : null,
-      userSeq : null
+      userSeq : null,
+      interest : [],
   },
 
   teacherLoginInfo : {
     email : null,
     username : null
   }
+
 }
 
 const loginCheckSlise = createSlice({
