@@ -214,7 +214,7 @@ const ClassDetail = () => {
       //height: '100%'
     },
     {
-      el : <ClassDetailAlbum communityAlbums={communityAlbums} communitiyId={communitiyId} />,
+      el : <ClassDetailAlbum findByCommunityAlbumService={findByCommunityAlbumService} communityAlbums={communityAlbums} communitiyId={communitiyId} />,
       //height: '100%'
     },
     {

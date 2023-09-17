@@ -6,10 +6,13 @@ import like from "../../../asset/images/like.png";
 import addBtn from "../../../asset/images/add.png";
 import Loading from "../../atoms/Loading";
 import {useNavigate} from "react-router-dom";
+import {likeInsertFunc} from "../../../common/api/ApiPostService";
+import {useSelector} from "react-redux";
 
 const ClassDetailAlbum = (props) => {
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
+  const userInfo = useSelector(state => state.loginCheck.loginInfo);
 
 
   const createAlbumHandler = () => {
@@ -20,6 +23,14 @@ const ClassDetailAlbum = (props) => {
     }, 500);
   }
 
+  const likeHandler = (data) => {
+    likeInsertFunc('album', data.id, userInfo.userSeq).then((res) => {
+      props.findByCommunityAlbumService(props.communitiyId);
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
   return (
     <div className={myClasses.mainSwiperSection}>
       <div className={classes.albumWrap}>
@@ -27,7 +38,7 @@ const ClassDetailAlbum = (props) => {
           {props.communityAlbums.length != 0  ? props.communityAlbums.map((item, idx) => (
             <div key={idx} className={classes.albumItem}>
               <img src={item.imgPath} />
-              <div className={classes.likeArea}>
+              <div onClick={() => {likeHandler(item)}} className={classes.likeArea}>
                 <img src={like} /><p>{item.likeCount}</p>
               </div>
             </div>
