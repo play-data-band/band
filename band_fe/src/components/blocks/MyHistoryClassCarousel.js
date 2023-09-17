@@ -34,7 +34,7 @@ export default function MyHistoryClassCarousel(props) {
         modules={[FreeMode, Pagination]}
         className="mySwiper"
       >
-        {JSON.parse(localStorage.getItem('storedData')).length != 0 ? JSON.parse(localStorage.getItem('storedData')).map((item, idx) => (
+        {localStorage.getItem('storedData') != undefined ? JSON.parse(localStorage.getItem('storedData')).map((item, idx) => (
           <SwiperSlide key={idx}>
             <div onClick={() => {goToDetail(item.communityId)}} className={classes.slideWrap}>
               <div className={classes.topSection}>
