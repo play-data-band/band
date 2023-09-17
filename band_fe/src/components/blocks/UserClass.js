@@ -2,10 +2,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import classes from "../../styles/blocks/SuggestComunity.module.css";
 import piano from "../../asset/images/piano.jpeg";
 
-const UserClass = () => {
+const UserClass = (props) => {
+
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log(props)
   }, [])
 
   const backgroundRef = useRef();
@@ -23,16 +26,16 @@ const UserClass = () => {
     <div style={{marginBottom : '2vw'}}>
       <div ref={backgroundRef} onClick={suggestionClickMethod} className={classes.suggestionArea}>
         <div className={classes.suggestionLeft}>
-          <div className={classes.suggestionLeftInner}><img src={piano} /></div>
+          <div className={classes.suggestionLeftInner}><img src={props.data.communityImage} /></div>
         </div>
         <div className={classes.suggestionRight}>
           <div className={classes.classRightInner}>
-            <h2 className={classes.classTitle}>피아노를 사랑하는 사람들의 모임</h2>
+            <h2 className={classes.classTitle}>{props.data.communityName}</h2>
             <div className={classes.suggestionDetail}>
               <p className={classes.location}>강남구</p>
               <p className={classes.gb}>|</p>
-              <p className={classes.member}>멤버&nbsp;<span>250</span></p>
-              <div className={classes.cateWrap}><p>음악/악기</p></div>
+              <p className={classes.member}>멤버&nbsp;<span>{props.memberCount}</span></p>
+              <div style={{color : props.data.memberRole === '모임장' && '#ff0000'}} className={classes.cateWrap}><p>{props.data.memberRole}</p></div>
             </div>
           </div>
         </div>

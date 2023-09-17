@@ -23,14 +23,16 @@ const ClassDetailAlbum = (props) => {
   return (
     <div className={myClasses.mainSwiperSection}>
       <div className={classes.albumWrap}>
-        {props.communityAlbums.length != 0  ? props.communityAlbums.map((item, idx) => (
-          <div key={idx} className={classes.albumItem}>
-            <img src={item.imgPath} />
-            <div className={classes.likeArea}>
-              <img src={like} /><p>{item.likeCount}</p>
+        <div className={classes.albumWrapInner}>
+          {props.communityAlbums.length != 0  ? props.communityAlbums.map((item, idx) => (
+            <div key={idx} className={classes.albumItem}>
+              <img src={item.imgPath} />
+              <div className={classes.likeArea}>
+                <img src={like} /><p>{item.likeCount}</p>
+              </div>
             </div>
-          </div>
-        )) : <p style={{margin: '0 auto', height: '100%', background : '#fff', paddingTop: '10vw'}}>등록된 사진이 없습니다.</p>}
+          )) : <p style={{margin: '0 auto', height: '100%', background : '#fff', paddingTop: '10vw'}}>등록된 사진이 없습니다.</p>}
+        </div>
       </div>
       <div onClick={createAlbumHandler} className={classes.createCommunity}>
         <img src={addBtn} />

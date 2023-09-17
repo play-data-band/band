@@ -21,12 +21,13 @@ import {
   findByCommunitySchedule,
   scheduleMemberCondition
 } from "../../../common/api/ApiGetService";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import PopupDom from "../../blocks/PopupDom";
 import MsgPopup from "../../blocks/MsgPopup";
 import ConfirmPopup from "../../blocks/ConfirmPopup";
 import {communityInsert, communityMemberDelete, scheduleInsert} from "../../../common/api/ApiPostService";
 import Loading from "../../atoms/Loading";
+import {loginCheckAction} from "../../../ducks/loginCheck";
 
 const ClassDetail = () => {
   const border = useRef();
@@ -45,6 +46,7 @@ const ClassDetail = () => {
   const [communityAlbums, setCommunityAlbums] = useState([]);
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -211,7 +213,12 @@ const ClassDetail = () => {
   }
 
   const closeConfirmPopup = () => {
+
     setIsConfirmPopupOpen({show: false, msg: '', gb : '', data : ''});
+  }
+
+  const logoutHandler = () => {
+    setIsConfirmPopupOpen({show: true, msg: '로그아웃 하시겠습니까 ?', gb : 'logout', data : ''});
   }
 
   const confirmHandler = () => {
@@ -220,7 +227,7 @@ const ClassDetail = () => {
     if (isConfirmPopupOpen.gb === 'community') {
 
       setTimeout(() => {
-        communityInsert(communitiyId, userInfo.userSeq, userInfo.username, "CUSTOMER", userInfo.profileImgPath, communityInfo.description, communityInfo.profileImage).then((res) => {
+        communityInsert(communitiyId, userInfo.userSeq, userInfo.username, "일반회원", userInfo.profileImgPath, communityInfo.description, communityInfo.profileImage).then((res) => {
           setLoading(false);
 
           findByCommunityCountHandler(communitiyId);
@@ -272,6 +279,26 @@ const ClassDetail = () => {
 
       }, 500);
     }
+
+    if (isConfirmPopupOpen.gb === 'logout') {
+
+      setTimeout(() => {
+        setLoading(false);
+        const res = {
+          isLogin : false,
+          id : null,
+          username : null,
+          profileImgPath : null,
+          mbti : null,
+          token : null,
+          userSeq : null,
+          interest : []
+        }
+        dispatch(loginCheckAction.loginInfoSet(res));
+        nav('/')
+      }, 500);
+
+    }
   }
 
   return (
@@ -296,7 +323,7 @@ const ClassDetail = () => {
               <div className={myClasses.share}>
                 <img src={share} />
               </div>
-              <div className={myClasses.more}>
+              <div onClick={logoutHandler} className={myClasses.more}>
                 <img src={more} />
               </div>
             </div>

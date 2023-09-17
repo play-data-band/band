@@ -12,7 +12,8 @@ import ClassCarousel from "../../blocks/ClassCarousel";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import Loading from "../../atoms/Loading";
-import {interestCommunityGet} from "../../../common/api/ApiGetService";
+import {findByMyCommunity, interestCommunityGet} from "../../../common/api/ApiGetService";
+import {userRecommandCommunity} from "../../../common/api/ApiPostService";
 
 const MyClass = () => {
   const [showFixedMenuBar, setShowFixedMenuBar] = useState(false);
@@ -23,6 +24,8 @@ const MyClass = () => {
   const [findCategoryText, setFindCategoryText] = useState('운동/스포츠');
   const [loading, setLoading] = useState(false);
   const [communityList, setCommunityList] = useState([])
+  const [recommandList, setRecommandList] = useState([])
+  const [myCommunity, setMyCommunity] = useState([])
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
   const [mainFirstReq, setMainFirstReq] = useState(false);
@@ -97,15 +100,38 @@ const MyClass = () => {
       return;
     }
 
-    interestCommunityGet(findCategoryText, page, size).then((res) => {
+    // 빈 arr 만들어서..
+    const array = [];
 
+    // arr에 저장..
+    userInfo.interest.forEach((item, idx) => {
+      array.push(item.interest);
+    })
+
+    // 내 추천 리스트..
+    userRecommandCommunity(array, page, size).then((res) => {
+      if (res.status === 200) {
+          setRecommandList(res.data.content);
+      }
+    }).catch((err) => {
+
+    })
+
+    // 단일 흥미 리스트..
+    interestCommunityGet(findCategoryText, page, size).then((res) => {
       if(res.status === 200) {
 
         setLoading(false);
         setCommunityList(res.data.content);
       }
+    }).catch((err) => {
 
+    })
 
+    findByMyCommunity(userInfo.userSeq).then((res) => {
+      if (res.status === 200) {
+        setMyCommunity(res.data);
+      }
     }).catch((err) => {
 
     })
@@ -219,11 +245,11 @@ const MyClass = () => {
           <Header />
 
           <div className={myClasses.classWrap}>
-            <div><h2 className={myClasses.titleText}>내 주변에 새로 생겼어요</h2></div>
+            <div><h2 className={myClasses.titleText}>내 취미를 같이 즐겨봐요.</h2></div>
           </div>
 
           <div className={myClasses.slideWrap}>
-            <ClassCarousel data={dummy} />
+            <ClassCarousel data={recommandList} />
           </div>
 
           <div className={myClasses.classWrap}>
@@ -231,10 +257,10 @@ const MyClass = () => {
           </div>
 
           <div className={myClasses.userClassWrap}>
-            <UserClass />
-            <UserClass />
-            <UserClass />
-            <UserClass />
+            {myCommunity.length != 0 ? myCommunity.map((item, idx) => (
+              <UserClass memberCount={myCommunity.length} key={idx} data={item} />
+            )) : <p style={{textAlign : 'center', padding : '2vw'}}>가입한 모임이 없습니다.</p>}
+
           </div>
 
           <div style={{marginBottom : '0'}} className={myClasses.classWrap}>

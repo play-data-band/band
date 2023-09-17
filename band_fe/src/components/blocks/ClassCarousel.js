@@ -11,8 +11,13 @@ import {FreeMode, Pagination} from 'swiper/modules';
 
 import classes from "../../styles/blocks/Carousel.module.css";
 import piano from "../../asset/images/piano.jpeg";
+import {useNavigate} from "react-router-dom";
 
 export default function ClassCarousel(props) {
+  const nav = useNavigate();
+  const goToDetail = (data) => {
+    nav(`/classDetail?detail=${data}`);
+  }
   return (
     <>
       <Swiper
@@ -27,13 +32,13 @@ export default function ClassCarousel(props) {
       >
         {props.data.map((item, idx) => (
           <SwiperSlide key={idx}>
-            <div className={classes.slideWrap}>
+            <div onClick={() => {goToDetail(item.id)}} className={classes.slideWrap}>
               <div className={classes.topSection}>
-                <img src={piano} />
+                <img src={item.profileImage} />
               </div>
               <div className={classes.bottomSection}>
-                <p className={classes.bottomSectionTopText}>{item.desc.substring(0, 5)}</p>
-                <p className={classes.bottomSectionBotText}>{item.desc}</p>
+                <p className={classes.bottomSectionTopText}>{item.category.substring(0, 5)}</p>
+                <p className={classes.bottomSectionBotText}>{item.description}</p>
               </div>
             </div>
           </SwiperSlide>
