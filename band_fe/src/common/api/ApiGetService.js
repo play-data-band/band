@@ -30,6 +30,10 @@ export const findByCommunitySchedule = (communityid) => apiClient.get(`/api/v1/s
 
 export const findByCommunityBoard = (communityid) => apiClient.get(`/api/v1/board/${communityid}`);
 
+export const findByCommunityAlbum = (communityid) => apiClient.get(`/api/v1/album/communityid/${communityid}`);
+
+
+
 
 
 

@@ -71,7 +71,7 @@ export const createSchedule = (communityId, scheduleName, scheduleTime, meetingP
 
 export const communityMemberDelete = (memberId, communityId) => apiClient.delete(`/api/v1/communitymember/memberid/${memberId}/communityid/${communityId}`);
 
-export const likeInsert = (boardUUID, boardLike) => apiClient.put(`/api/v1/board/likeCountUpdate/${boardUUID}`, {
-  boardLike
+export const albumInsert = (communityId, memberId, memberName, memberImgPath, imgPath, likeCount) => apiClient.post(`http://192.168.0.104:8000/api/v1/album/communityid/${communityId}`, {
+  communityId, memberId, memberName, memberImgPath, imgPath, likeCount
 });
 

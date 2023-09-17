@@ -29,12 +29,12 @@ const ClassDetailBoard = (props) => {
   return (
     <div className={myClasses.mainSwiperSection}>
 
-      <div className={classes.notiArea}>
+      {props.communityBoards.length != 0 && <div className={classes.notiArea}>
         <div className={classes.notiAreaContent}>
           <p className={classes.notiHighLight}>[필독]</p>
           <p>정모 참석 여부</p>
         </div>
-      </div>
+      </div>}
 
       {props.communityBoards.length != 0 ? props.communityBoards.map((item, idx) => (
         <div key={idx}>

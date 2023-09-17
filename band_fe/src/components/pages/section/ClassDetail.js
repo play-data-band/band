@@ -14,6 +14,7 @@ import ClassDetailBoard from "../Layout/ClassDetailBoard";
 import ClassDetailAlbum from "../Layout/ClassDetailAlbum";
 import ClassDetailChat from "../Layout/ClassDetailChat";
 import {
+  findByCommunityAlbum,
   findByCommunityBoard,
   findByCommunityById,
   findByCommunityCount,
@@ -41,6 +42,7 @@ const ClassDetail = () => {
   const [isCommunityMember, setIsCommunityMember] = useState(false);
   const [scheduleInfo, setScheduleInfo] = useState([]);
   const [communityBoards, setCommunityBoards] = useState([]);
+  const [communityAlbums, setCommunityAlbums] = useState([]);
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
 
@@ -135,6 +137,16 @@ const ClassDetail = () => {
       })
   }
 
+  const findByCommunityAlbumService = (communitiyId) => {
+    findByCommunityAlbum(communitiyId).then((res) => {
+      if(res.status === 200) {
+        setCommunityAlbums(res.data.content);
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
   const borderAction = (idx) => {
 
 
@@ -148,12 +160,13 @@ const ClassDetail = () => {
         findByCommunityBoardService(communitiyId);
       break;
 
+      case 2 :
+        findByCommunityAlbumService(communitiyId);
+      break;
+
 
     }
 
-    if (idx === 0) {
-
-    }
 
     border.current.style.left = `${idx * 25}%`;
 
@@ -176,7 +189,7 @@ const ClassDetail = () => {
       //height: '100%'
     },
     {
-      el : <ClassDetailAlbum />,
+      el : <ClassDetailAlbum communityAlbums={communityAlbums} communitiyId={communitiyId} />,
       //height: '100%'
     },
     {
