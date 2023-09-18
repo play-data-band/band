@@ -55,21 +55,26 @@ const ClassDetailMain = (props) => {
     const today = new Date();
     const target = new Date(targetDate);
 
-    // Calculate the time difference in milliseconds
-    const timeDifference = target - today;
+    // 로컬 타임존의 offset을 구합니다.
+    const localTimeZoneOffset = today.getTimezoneOffset();
+    const targetTimeZoneOffset = target.getTimezoneOffset();
 
-    // Convert milliseconds to days
+    // 현재 날짜와 타겟 날짜에 offset을 적용합니다.
+    const todayWithOffset = new Date(today.getTime() + (localTimeZoneOffset * 60 * 1000));
+    const targetWithOffset = new Date(target.getTime() + (targetTimeZoneOffset * 60 * 1000));
+
+    // 타겟 날짜와 현재 날짜의 차이를 밀리초 단위로 계산합니다.
+    const timeDifference = targetWithOffset - todayWithOffset;
+
+    // 밀리초를 일 단위로 변환합니다.
     const daysRemaining = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-    // Check if the target date is today
+debugger
     if (daysRemaining === 0) {
-      return 'TODAY';
+      return '오늘';
     } else if (daysRemaining > 0) {
-      // If daysRemaining is positive, it means the target date is in the future
       return `D-${daysRemaining}`;
     } else {
-      // If daysRemaining is negative, it means the target date is in the past
-      return `D+${daysRemaining}`;
+      return `D+${-daysRemaining}`;
     }
   }
 
