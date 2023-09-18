@@ -11,12 +11,14 @@ import {useNavigate} from "react-router-dom";
 import {findByMyReserve} from "../../../common/api/ApiGetService";
 import MyClassCarousel from "../../blocks/MyClassCarousel";
 import MyHistoryClassCarousel from "../../blocks/MyHistoryClassCarousel";
+import Loading from "../../atoms/Loading";
 
 const MyPage = () => {
   const userInfo = useSelector(state => state.loginCheck.loginInfo);
   const nav = useNavigate();
   const [myReserveList, setMyReserveList] = useState([]);
   const [myCommunityHistory, setMyCommunityHistory] = useState([]);
+  const [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
@@ -36,6 +38,17 @@ const MyPage = () => {
 
   }, []);
 
+  const modifyMethod = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+
+      nav('/modifyInfo');
+
+    }, 500);
+  }
+
 
   return (
     <div className={classes.fixedSpace}>
@@ -51,7 +64,7 @@ const MyPage = () => {
           <div className={myClasses.myAreaLeft}>
             <div className={myClasses.myProfileImg}>
               <img className={myClasses.myProfileImgInner} src={userInfo.profileImgPath} />
-              <div className={myClasses.modiImg}>
+              <div onClick={modifyMethod} className={myClasses.modiImg}>
                 <img src={set} />
               </div>
             </div>
@@ -91,6 +104,7 @@ const MyPage = () => {
 
         {/* bottom={showFixedMenuBar ? '0' : '-20vw'} */}
         <FixedMenuBar />
+        {loading && <Loading />}
       </Mobile>
     </div>
   );

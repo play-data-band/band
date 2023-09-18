@@ -97,7 +97,7 @@ const Login = () => {
 
     setTimeout(() => {
       setLoading(false);
-      window.location.href = 'http://192.168.0.229:3002';
+      window.location.href = 'http://192.168.0.229:3001';
     }, 700);
 
   }

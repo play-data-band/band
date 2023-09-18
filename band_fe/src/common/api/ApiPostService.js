@@ -72,7 +72,7 @@ export const createSchedule = (communityId, scheduleName, scheduleTime, meetingP
 
 export const communityMemberDelete = (memberId, communityId) => apiClient.delete(`/api/v1/communitymember/memberid/${memberId}/communityid/${communityId}`);
 
-export const albumInsert = (communityId, memberId, memberName, memberImgPath, imgPath, likeCount) => apiClient.post(`http://192.168.0.104:8000/api/v1/album/communityid/${communityId}`, {
+export const albumInsert = (communityId, memberId, memberName, memberImgPath, imgPath, likeCount) => apiClient.post(`/api/v1/album/communityid/${communityId}`, {
   communityId, memberId, memberName, memberImgPath, imgPath, likeCount
 });
 
@@ -89,4 +89,12 @@ export const likeInsertFunc = (target, targetId, memberId) => apiClient.post(`/a
 
 export const writeCommentFunc = (content, targetId, memberId, memberImage, memberName) => apiClient.post(`/api/v1/comment`, {
   content, targetId, memberId, memberImage, memberName
+});
+
+export const modifyUserInfo = (email, password, name, mbti, imgPath, token) => apiClient.put(`/api/v1/user/update`, {
+  email, password, name, mbti, imgPath
+}, {
+  headers : {
+    'Authorization' : token
+  }
 });

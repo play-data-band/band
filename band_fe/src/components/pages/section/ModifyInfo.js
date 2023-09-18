@@ -11,20 +11,25 @@ import ConfirmPopup from "../../blocks/ConfirmPopup";
 import {passCheck} from "../../../common/Reg";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import CategorySelect from "../../blocks/CategorySelect";
 import {categoryMenu} from "../../../common/Menus";
 import {
-  albumInsert,
   boardInsert,
   BoardInsert,
   createCommunity,
-  createSchedule
+  createSchedule,
+  modifyUserInfo
 } from "../../../common/api/ApiPostService";
+import {login} from "../../../common/AuthContext";
+import {loginCheckAction} from "../../../ducks/loginCheck";
 
-const CreateAlbum = () => {
+const ModifyInfo = () => {
   const [userLocation, setUserLocation] = useState('');
   const [userCateSub, setUserCateSub] = useState('');
+  const [userCateSub2, setUserCateSub2] = useState('');
+  const [userCateSub3, setUserCateSub3] = useState('');
+  const [userCateSub4, setUserCateSub4] = useState('');
   const [userDesc, setUserDesc] = useState('');
   const [userImg, setUserImg] = useState('');
   const [userImg2, setUserImg2] = useState('');
@@ -36,7 +41,7 @@ const CreateAlbum = () => {
   const [communityId, setCommunityId] = useState('');
   const [communityInterest, setCommunityInterest] = useState('');
   const userInfo = useSelector(state => state.loginCheck.loginInfo);
-  const [userFile, setUserFile] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const queryString = window.location.search;
@@ -52,11 +57,34 @@ const CreateAlbum = () => {
     setTimeout(() => {
       setLoading(false);
 
-      albumInsert(communityId, userInfo.userSeq, userInfo.username, userInfo.profileImgPath, userLocation, 0).then((res) => {
-        if (res.status === 200) {
-          setIsMsgPopupOpen({show: true, msg: '사진첩이 생성 되었습니다.', gb: '1'});
+      modifyUserInfo(userLocation, userCateSub, userCateSub2, userCateSub3, userCateSub4, userInfo.token).then((res) => {
+
+        if(res.status === 200) {
+
+          setIsMsgPopupOpen({show: true, msg: '변경이 완료 되었습니다.'});
+
+          login(userLocation, userCateSub).then((res) => {
+            // 로그인 성공
+
+            if (res.isLogin) {
+              // redux ( localStorage ) 저장..
+              dispatch(loginCheckAction.loginInfoSet(res));
+              nav('/main');
+            } else {
+              // 로그인 실패
+              setIsMsgPopupOpen({show: true, msg: res.response.data.data.message});
+            }
+
+          }).catch((err) => {
+
+            console.log(err);
+          })
+
         }
+
+
       }).catch((err) => {
+
       })
 
 
@@ -66,7 +94,7 @@ const CreateAlbum = () => {
   const closeMsgPopup = (gb) => {
 
     if (isMsgPopupOpen.gb === '1') {
-      nav(`/classDetail?detail=${communityId}&pageIdx=${2}`);
+      nav(`/classDetail?detail=${communityId}&pageIdx=${1}`);
     }
 
     setIsMsgPopupOpen({show: false, msg: '', gb: '0'});
@@ -87,6 +115,18 @@ const CreateAlbum = () => {
   const categorySubHandler = (e) => {
     setUserCateSub(e.target.value);
   }
+
+  const categorySubHandler2 = (e) => {
+    setUserCateSub2(e.target.value);
+  }
+
+  const categorySubHandler3 = (e) => {
+    setUserCateSub3(e.target.value);
+  }
+
+  const categorySubHandler4 = (e) => {
+    setUserCateSub4(e.target.value);
+  }
   const descHandler = (e) => {
     setUserDesc(e.target.value);
   }
@@ -98,13 +138,6 @@ const CreateAlbum = () => {
     setUserImg2(e.target.value);
   }
 
-  const handleImageUpload = (e) => {
-    // 선택한 파일
-    console.log("업로드된 파일:", e.target.files[0]);
-
-    setUserFile(e.target.files[0]);
-
-  };
 
   return (
     <div>
@@ -118,18 +151,16 @@ const CreateAlbum = () => {
           <img className={classes.signUpPageLogo} src={mainLogo} />
         </div>
 
-        <h2 style={{fontSize : '4vw', textAlign : 'center', fontWeight : '600', marginBottom : '5vw'}}>생성할 사진의 URL을 입력해 주세요.</h2>
+        <h2 style={{fontSize : '4vw', textAlign : 'center', fontWeight : '600', marginBottom : '5vw'}}>수정할 정보를 입력해 주세요.</h2>
 
 
         <div className={classes.inputArea}>
-          <Input onChange={locationHandler} placeholder="제목" value="이미지 URL" type="text" />
-          <Input
-            placeholder="프로필 이미지"
-            value="프로필 이미지"
-            type="file"
-            accept="image/*" // 이미지 파일만 허용
-            onChange={(e) => handleImageUpload(e)}
-          />
+          <Input onChange={locationHandler} placeholder="example@naver.com" value="email" type="text" />
+          <Input onChange={categorySubHandler} placeholder="********" value="password" type="password" />
+          <Input onChange={categorySubHandler2} placeholder="김길동" value="name" type="text" />
+          <Input onChange={categorySubHandler3} placeholder="ENFJ" value="mbti" type="text" />
+          <Input onChange={categorySubHandler4} placeholder="이미지 URL" value="이미지 URL" type="text" />
+
           <div className={classes.findArea}></div>
           <Button onClick={signupHandler} value="만들기" />
         </div>
@@ -147,4 +178,4 @@ const CreateAlbum = () => {
   );
 };
 
-export default CreateAlbum;
+export default ModifyInfo;

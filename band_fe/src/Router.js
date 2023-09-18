@@ -12,6 +12,7 @@ import CreateCommunity from "./components/pages/section/CreateCommunity";
 import CreateSchedule from "./components/pages/section/CreateSchedule";
 import CreateBoard from "./components/pages/section/CreateBoard";
 import CreateAlbum from "./components/pages/section/CreateAlbum";
+import ModifyInfo from "./components/pages/section/ModifyInfo";
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
   {
     path : '/createAlbum',
     element : <CreateAlbum />,
+  },
+  {
+    path : '/modifyInfo',
+    element : <ModifyInfo />,
   },
 
 ]);
