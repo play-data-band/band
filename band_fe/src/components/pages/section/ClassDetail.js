@@ -234,7 +234,7 @@ const ClassDetail = () => {
 
   const sections = [
     {
-      el : <ClassDetailMain scheduleInfo={scheduleInfo} setIsConfirmPopupOpen={setIsConfirmPopupOpen} isCommunityMember={isCommunityMember} communitiyId={communitiyId} communityInfo={communityInfo} communityCount={communityCount} />,
+      el : <ClassDetailMain setIsMsgPopupOpen={setIsMsgPopupOpen} scheduleInfo={scheduleInfo} setIsConfirmPopupOpen={setIsConfirmPopupOpen} isCommunityMember={isCommunityMember} communitiyId={communitiyId} communityInfo={communityInfo} communityCount={communityCount} />,
       //height: 'auto'
     },
     {

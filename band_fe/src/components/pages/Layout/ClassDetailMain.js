@@ -41,7 +41,7 @@ const ClassDetailMain = (props) => {
   function formatTimeToYYYYMMDDHHMM(isoDate) {
     const date = new Date(isoDate);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0F');
     const day = String(date.getDate()).padStart(2, '0');
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -55,25 +55,42 @@ const ClassDetailMain = (props) => {
     const today = new Date();
     const target = new Date(targetDate);
 
-    // 날짜 차이 계산
+    // Calculate the time difference in milliseconds
     const timeDifference = target - today;
 
-    // 밀리초를 일로 변환
-    const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+    // Convert milliseconds to days
+    const daysRemaining = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-    // '+' 표시를 추가
-    const ddayString = daysRemaining < 0 ? `+${daysRemaining}` : '-'+daysRemaining.toString();
-
-    return ddayString;
+    // Check if the target date is today
+    if (daysRemaining === 0) {
+      return 'TODAY';
+    } else if (daysRemaining > 0) {
+      // If daysRemaining is positive, it means the target date is in the future
+      return `D-${daysRemaining}`;
+    } else {
+      // If daysRemaining is negative, it means the target date is in the past
+      return `D+${daysRemaining}`;
+    }
   }
 
   const scheduleAdd = () => {
     setLoading(true);
+    let condition = false;
+
+    for(const item of props.communityCount) {
+      if (item.memberId == userInfo.userSeq) {
+        condition = true;
+      }
+    }
 
     setTimeout(() => {
       setLoading(false);
 
-      nav(`/createSchedule?communityId=${props.communitiyId}&interest=${props.communityInfo.interest}`);
+      if(condition) {
+        nav(`/createSchedule?communityId=${props.communitiyId}&interest=${props.communityInfo.interest}`);
+      } else {
+        props.setIsMsgPopupOpen({ show: true, msg: '모임에 참여 후 이용해 주세요.'});
+      }
 
     }, 500);
   }
@@ -119,7 +136,7 @@ const ClassDetailMain = (props) => {
                 <div className={myClasses.scheduleItem}>
 
                   <div className={myClasses.topSchedule}>
-                    <h2>{formatTimeToYYYYMMDDHHMM(item.scheduleTime)}</h2><p>{calculateDday(item.scheduleTime) == 0 ? 'TODAY' : 'D' + calculateDday(item.scheduleTime)}</p>
+                    <h2>{formatTimeToYYYYMMDDHHMM(item.scheduleTime)}</h2><p>{calculateDday(item.scheduleTime)}</p>
                   </div>
 
                   <div className={myClasses.secondSchedule}>

@@ -70,7 +70,7 @@ const TeacherSignup = () => {
 
         // 회원가입 성공 시..
         if (res.data.status == "success") {
-debugger
+
           const loginInfo = {
             isLogin : false,
             id : null,
