@@ -33,7 +33,7 @@ const ClassDetailChat = (props) => {
 
     fetchDataInterval = setInterval(() => {
       setTimeData((prevTimeData) => !prevTimeData);
-    }, 100000);
+    }, 5000);
 
     return () => {
        clearInterval(fetchDataInterval);
