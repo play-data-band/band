@@ -10,6 +10,7 @@ import FixedMenuBar from "../Layout/FixedMenuBar";
 import {useNavigate} from "react-router-dom";
 import Loading from "../../atoms/Loading";
 import {
+  findByCommunityMember,
   interestCommunityGet,
   interestNewCommunityGet, test222
 } from "../../../common/api/ApiGetService";
@@ -64,7 +65,25 @@ const Main = () => {
 
       if (res.status === 200) {
         if (mainFirstReq) {
-          setCommunityList(res.data.content);
+
+          const arr = res.data.content;
+
+          for (const [idx, item] of res.data.content.entries()) {
+            findByCommunityMember(item.id)
+              .then((res) => {
+
+                if (res.data.length == 0) {
+                  arr[idx].memberCount = 0;
+                } else {
+                  arr[idx].memberCount = res.data.length;
+                }
+
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+          setCommunityList(arr);
           setMainFirstReq(false);
         }
 
@@ -271,8 +290,27 @@ const Main = () => {
 
         setTimeout(() => {
           setLoading(false);
-          setCommunityList(res.data.content);
-        }, 400);
+
+          const arr = res.data.content;
+
+          for (const [idx, item] of res.data.content.entries()) {
+            findByCommunityMember(item.id)
+              .then((res) => {
+
+                if (res.data.length == 0) {
+                  arr[idx].memberCount = 0;
+                } else {
+                  arr[idx].memberCount = res.data.length;
+                }
+
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+
+          setCommunityList(arr);
+        }, 500);
 
       }).catch((err) => {
 

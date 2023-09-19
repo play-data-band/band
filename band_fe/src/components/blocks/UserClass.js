@@ -45,7 +45,6 @@ const UserClass = (props) => {
     const formattedDateTime = new Date(dateTimeString).toLocaleString('ko-KR', options);
     return formattedDateTime;
   }
-
   return (
     <div style={{marginBottom : '2vw'}}>
       <div ref={backgroundRef} onClick={() => suggestionClickMethod(props.data.communityId)} className={classes.suggestionArea}>
@@ -58,7 +57,7 @@ const UserClass = (props) => {
             <div className={classes.suggestionDetail}>
               <p className={classes.location}>강남구</p>
               <p className={classes.gb}>|</p>
-              <p className={classes.member}>멤버&nbsp;<span>{props.memberCount}</span></p>
+              <p className={classes.member}>멤버 모집 중</p>
               <div style={{color : props.data.memberRole === '모임장' && '#ff0000'}} className={classes.cateWrap}><p>{props.data.memberRole}</p></div>
             </div>
           </div>

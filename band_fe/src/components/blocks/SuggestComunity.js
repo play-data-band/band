@@ -27,7 +27,7 @@ const SuggestComunity = (props) => {
           <div className={classes.suggestionDetail}>
             <p className={classes.location}>강남구</p>
             <p className={classes.gb}>|</p>
-            <p className={classes.member}>멤버&nbsp;<span>250</span></p>
+            <p className={classes.member}>멤버&nbsp;<span>{props.data.memberCount == 0 ? '모집 중' : props.data.memberCount}</span></p>
             <div className={classes.cateWrap}><p>{props.data != undefined && props.data.interest}</p></div>
           </div>
         </div>

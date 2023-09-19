@@ -39,6 +39,7 @@ const CreateSchedule = () => {
 
     setCommunityId(urlParams.get('communityId'))
     setCommunityInterest(urlParams.get('interest'));
+
   }, []);
 
   const signupHandler = () => {

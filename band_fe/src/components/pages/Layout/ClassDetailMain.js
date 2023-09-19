@@ -18,14 +18,13 @@ const ClassDetailMain = (props) => {
 
   const nav = useNavigate();
 
-
-
   const scheduleHandler = (item, idx) => {
     const newScheduleStates = [...scheduleStates];
     newScheduleStates[idx] = !newScheduleStates[idx];
     setScheduleStates(newScheduleStates);
 
     props.setIsConfirmPopupOpen({ show: true, msg: '일정에 참여 하시겠습니까 ?', gb : 'scheduleInsert', data : item.id });
+    // setBtnSwitch(!btnSwitch);
   }
 
   const communityInsertHandler = () => {
@@ -67,8 +66,8 @@ const ClassDetailMain = (props) => {
     const timeDifference = targetWithOffset - todayWithOffset;
 
     // 밀리초를 일 단위로 변환합니다.
-    const daysRemaining = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-debugger
+    const daysRemaining = Math.floor(timeDifference / (1000 * 60 * 60 * 23));
+
     if (daysRemaining === 0) {
       return '오늘';
     } else if (daysRemaining > 0) {
@@ -136,8 +135,7 @@ debugger
 
             {props.scheduleInfo.length != 0 ? props.scheduleInfo.map((item, idx) => (
               <div key={idx} className={myClasses.scheduleWrap}>
-                {!btnSwitch && <div onClick={() => scheduleHandler(item, idx)} className={myClasses.scheduleBtn}><p>참여</p></div>}
-                {btnSwitch && <div onClick={() => scheduleHandler(item, idx)} className={myClasses.scheduleBtnCancel}><p>취소</p></div>}
+                <div onClick={() => scheduleHandler(item, idx)} className={myClasses.scheduleBtn}><p>{btnSwitch ? '취소' : '참여'}</p></div>
                 <div className={myClasses.scheduleItem}>
 
                   <div className={myClasses.topSchedule}>

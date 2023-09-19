@@ -72,7 +72,7 @@ const MyPage = () => {
           <div className={myClasses.myAreaRight}>
             <h2>{userInfo.username}</h2>
             <p>
-              <span>경기도</span>
+              <span>{userInfo.mbti}</span>
               <span>1994.09.11</span>
             </p>
           </div>
