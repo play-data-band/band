@@ -32,10 +32,53 @@ spring:
           predicates:
             - Path=/api/v1/interest/**
 
+        - id: BAND-USER-SERVICE
+          uri: "lb://BAND-USER-SERVICE"
+          predicates:
+            - Path=/api/v1/bandMember/**
+
         - id: BAND-COMMUNITY-SERVICE
           uri: "lb://BAND-COMMUNITY-SERVICE"
           predicates:
             - Path=/api/v1/community/**
+
+        - id: BAND-SCHEDULE-SERVICE
+          uri: "lb://BAND-SCHEDULE-SERVICE"
+          predicates:
+            - Path=/api/v1/schedule/**
+
+        - id: BAND-CHATTING-SERVICE
+          uri: "lb://BAND-CHATTING-SERVICE"
+          predicates:
+            - Path=/api/v1/chattings/**
+
+        - id: BAND-COMMUNITY-MEMBER-SERVICE
+          uri: "lb://BAND-COMMUNITY-MEMBER-SERVICE"
+          predicates:
+            - Path=/api/v1/communitymember/**
+
+
+        - id: BAND-BOARD-SERVICE
+          uri: "lb://BAND-BOARD-SERVICE"
+          predicates:
+            - Path=/api/v1/board/**
+
+        - id: BAND-LIKE-SERVICE
+          uri: "lb://BAND-LIKE-SERVICE"
+          predicates:
+            - Path=/api/v1/like/**
+
+        - id: BAND-ALBUM-SERVICE
+          uri: "lb://BAND-ALBUM-SERVICE"
+          predicates:
+            - Path=/api/v1/album/**
+
+        - id: BAND-COMMENT-SERVICE
+          uri: "lb://BAND-COMMENT-SERVICE"
+          predicates:
+            - Path=/api/v1/comment/**
+
+
 
 # Config Server Observing Update..
 management:
